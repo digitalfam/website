@@ -26,8 +26,8 @@ jobs:
 
       # Fazer build da imagem Docker usando o Dockerfile no repositório
       - name: Build the Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}/website:latest .
+        run: docker build -t ghcr.io/digitalfam/website:latest .
 
       # Enviar (push) a imagem Docker para o GitHub Container Registry
       - name: Push the Docker image to GitHub Packages
-        run: docker push ghcr.io/${{ github.repository }}/website:latest
+        run: docker push ghcr.io/digitalfam/website:latest
