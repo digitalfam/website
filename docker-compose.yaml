@@ -34,9 +34,9 @@ services:
     image: 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.djchat.rule=Host(`ranquei.xyz`)"
-      - "traefik.http.routers.djchat.entrypoints=websecure"
-      - "traefik.http.routers.djchat.tls.certresolver=myresolver"
+      - "traefik.http.routers.website.rule=Host(`ranquei.xyz`)"
+      - "traefik.http.routers.website.entrypoints=websecure"
+      - "traefik.http.routers.website.tls.certresolver=myresolver"
       - "com.centurylinklabs.watchtower.enable=true"
     env_file:
       - .env
