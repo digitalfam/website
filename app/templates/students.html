@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Alunos{% endblock %}
+
+{% block content %}
+    <div class="container pt-4">
+        <div class="bg-body-tertiary p-5 rounded">
+            <h1 class="text-center">Painel de Alunos</h1>
+            <p class="lead text-center">Aqui você visualizar os alunos cadastrados.</p>
+        </div>
+        <div class="row align-items-center mt-3">
+            <div class="col-12 table-responsive">
+                {% if error %}
+                    <div>
+                        {% for err in error %}
+                            <div class="alert-custom alert alert-danger alert-dismissible" role="alert" id="message">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                {{ err }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <table id="studentsTable" class="table table-striped dt-responsive nowrap" style="width:100%">
+                    {% if alunos %}
+                        <caption>Lista de alunos cadastrados</caption>
+                    {% endif %}
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">Celular</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if alunos %}
+                            {% for aluno in alunos %}
+                            <tr>
+                                <td>{{ aluno.user.username }}</td>
+                                <td>{{ aluno.cpf }}</td>
+                                <td>{{ aluno.phone }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="9" class="text-center text-muted">Ainda não foi registrado nenhum aluno.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

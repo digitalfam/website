@@ -1,13 +1,25 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="{% static 'app/img/gear.svg' %}">
-    <title>Hello World!</title>
-</head>
-<body>
-    <p>By Caio Ferreira</p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Página Inicial{% endblock title %}
+
+{% block content %}
+<div class="container pt-4">
+    <div class="bg-body-tertiary p-5 rounded">
+        {% if user.is_authenticated %}     
+            <h1 class="text-center">Olá, é bom te ver por aqui!</h1>
+            <p class="lead text-center">Esta é a página inicial da FAM Digital</p>
+            {% if user.is_superuser %}
+                <p class="lead text-center">Seja bem vindo(a)! <span class="superuser-welcome">{{ usuario }}</span></p>
+            {% else %}
+                <p class="lead text-center">Seja bem vindo(a)! <span class="user-welcome">{{ usuario }}</span></p>
+            {% endif %}
+        {% else %}
+            <h1 class="text-center">Autentique-se!</h1>
+            <p class="lead text-center">Você precisa fazer login para acessar o sistema Edifícios</p>
+            <div class="text-center">
+                <a class="btn btn-outline-primary" href="{% url 'login' %}">Login</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
