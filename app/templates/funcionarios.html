@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Página Funcionarios{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="header-container">
+            <h2>
+                <div class="img-container">
+                    <img src="{% static 'app/img/funcionario.png' %}" alt="Avatar do Funcionário">
+                </div>
+                Funcionários
+            </h2>
+        </div>
+        <div class="employee-table">
+            <div class="employee-header">
+                <div class="employee-photo">Foto</div>
+                <div class="employee-name">Nome</div>
+                <div class="employee-position">Cargo</div>
+                <div class="employee-actions">Ações</div>
+            </div>
+            <div class="employee-row">
+                <div class="employee-photo"><img src="./img/avatar.png" alt="Foto do Funcionário"></div>
+                <div class="employee-name">Nome do Funcionário</div>
+                <div class="employee-position">Cargo</div>
+                <div class="employee-actions">
+                    <button class="view"><i class="fa-regular fa-eye"></i></button>
+                    <button class="edit"><i class="fa-regular fa-pen-to-square"></i></button>
+                    <button class="delete"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
+            </div>
+            <div class="employee-row">
+                <div class="employee-photo"><img src="./img/avatar.png" alt="Foto do Funcionário"></div>
+                <div class="employee-name">Nome do Funcionário</div>
+                <div class="employee-position">Cargo</div>
+                <div class="employee-actions">
+                    <button class="view"><i class="fa-regular fa-eye"></i></button>
+                    <button class="edit"><i class="fa-regular fa-pen-to-square"></i></button>
+                    <button class="delete"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+
+</html>

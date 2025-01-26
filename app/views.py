@@ -6,6 +6,7 @@ from django.views import View
 from .forms import LoginForm, ProfileForm
 from .models import Profile
 
+
 class IndexView(View):
     def get(self, request):
         return render(request, 'index.html')

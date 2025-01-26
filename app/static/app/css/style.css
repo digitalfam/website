@@ -1,0 +1,123 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Questrial';
+    font-style: normal;
+    font-weight: 400;
+    background-color: #f8ecd7;
+    color: #3a3636;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+}
+
+header {
+    background-color: #494271;
+    color: #f8ecd7;
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logoFamDigital {
+    width: 150px;
+    margin-left: 5px;
+}
+
+header ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    gap: 35px;
+    margin-right: 20px;
+}
+
+header ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+}
+
+header ul li a:hover {
+    color: #f1da57;
+}
+
+main {
+    margin-top: 0; /* Remove margin-top */
+    text-align: center;
+    font-family: "Questrial", serif;
+    font-weight: 400;
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+   
+}
+
+main h2 {
+    font-size: 2.5rem; /* Increase font size */
+    margin-bottom: 35px; /* Increase margin-bottom */
+    text-align: center;
+}
+
+.opcoes {
+    display: flex;
+    justify-content: center;
+    gap: 35px; /* Increase gap */
+    font-size: 22px; /* Increase font size */
+}
+
+.opcao {
+    color: #3a3636;
+    border-radius: 10px;
+    padding: 5px; /* Increase padding */
+    width: 200px; /* Increase width */
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.opcao:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.opcao img {
+    background-color: #494271;
+    padding: 25px 35px; /* Increase padding */
+    width: 170px; /* Increase width */
+    height: 170px; /* Increase height */
+    margin-bottom: 20px; /* Increase margin-bottom */
+    border-radius: 15px;
+}
+
+footer {
+    position: relative; 
+    margin-top: 50px; 
+    font-size: 15px;
+    background-color: #494271;
+    color: #f8ecd7;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: auto;
+}

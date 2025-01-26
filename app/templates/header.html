@@ -1,46 +1,36 @@
-<header class="fixed-top">
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand text-uppercase fw-bold d-block d-md-none" href="{% url 'index' %}">
-                FAM DIGITAL
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAMDigital - Início</title>
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{% static 'app/img/icon.ico' %}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="{% url 'index' %}">
+                <img src="{% static 'app/img/logoFamDigital.png' %}" alt="Logo FAMDigital" class="logoFamDigital">
             </a>
-            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample"
-                aria-controls="navbarsExample" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-md-flex" id="navbarsExample">
-                <a class="navbar-brand text-uppercase fw-bold col-md-3 me-0 d-none d-md-block" href="{% url 'index' %}">
-                    FAM DIGITAL
-                </a>
-                {% if user.is_authenticated %}
-                    <ul class="navbar-nav col-md-6 justify-content-md-center">
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.path == '/students/' %}active{% endif %}"
-                                href="{% url 'students' %}">Alunos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.path == '#' %}active{% endif %}"
-                                href="#">Menu 02</a>
-                        </li>
-                    </ul>
-                    <div class="d-md-flex col-md-3 justify-content-md-end">
-                        <div class="flex-fill text-end">
-                            {% if user.is_superuser %}
-                                <button type="button" class="btn btn-outline-warning btn-custom-header">
-                                    <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
-                                </button>
-                            {% else %}
-                                <button type="button" class="btn btn-outline-success btn-custom-header">
-                                    <a class="nav-link" href="{% url 'profile' %}">Perfil</a>
-                                </button>
-                            {% endif %}
-                            <button type="button" class="btn btn-outline-light btn-custom-header">
-                                <a class="nav-link" href="{% url 'logout' %}">Sair</a>
-                            </button>               
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
-</header>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'index' %}">Início</a></li>
+                    <li><a href="#">Funcionários</a></li>
+                    <li><a href="#">Alunos</a></li>
+                    <li><a href="{% url 'profile' %}">Meu perfil</a></li>
+                    <li><a href="{% url 'logout' %}" class="sair">Sair</a></li>
+                </ul>
+            </nav>
+        </header>
+
+    </div>
+</body>
+
+</html>

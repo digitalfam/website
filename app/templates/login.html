@@ -1,44 +1,55 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!-- Link para o CSS do Bootstrap -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>FAMDigital - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'app/css/login.css' %}">
+    <link rel="shortcut icon" type="imagex/png" href="{% static 'app/img/icon.ico' %}">
 </head>
-<body class="bg-light">
+<body>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card mt-5">
-                    <div class="card-header text-center">
-                        <h2>Login</h2>
-                    </div>
-                    <div class="card-body">
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                {{ form.username.label_tag }}
-                                {{ form.username }}
-                            </div>
-                            <div class="form-group">
-                                {{ form.password.label_tag }}
-                                {{ form.password }}
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
-                        </form>
-                        {% if error %}
-                            <div class="alert alert-danger mt-3">{{ error }}</div>
-                        {% endif %}
-                    </div>
-                </div>
+        <header>
+            <img src="{% static 'app/img/logoFamDigital.png' %}" alt="Logo FAMDigital" class="logoFamDigital" href="/index/">
+        </header>
+        <main>
+            <div class="esquerda">
+                <img src="{% static 'app/img/logoFam.png' %}" alt="Logo FAM" class="logoFam">
+                <p class="descricao">
+                    “A única arma para melhorar o planeta é a Educação com ética.
+                    Ninguém nasce odiando outra pessoa pela cor da pele, por sua origem,
+                    ou ainda por sua religião. Para odiar, as pessoas precisam aprender,
+                    e se podem aprender a odiar, podem ser ensinadas a amar.”
+                </p>
+                <p class="autor">– Nelson Mandela</p>
             </div>
-        </div>
+            <div class="direita">
+                <h2>Login</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                    </div>
+                    <div class="botao-container">
+                        <button type="submit" class="botao">Entrar</button>
+                    </div>
+                    <a href="#" class="esqueceu">Esqueceu a senha?</a>
+                    <!-- <a href="#" class="primeiro-acesso">Primeiro acesso?</a> -->
+                </form>
+            </div>
+        </main>
+        <footer>
+            &copy; 2025 FAM Digital. Todos os direitos reservados.
+        </footer>
     </div>
-    <!-- Link para o JS do Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Página Inicial{% endblock title %}
 
 {% block content %}
+
 <div class="container pt-4">
-    <div class="bg-body-tertiary p-5 rounded">
+    <div class="bg-body-tertiary p-5 rounded" style="border-radius: 30px;">
         {% if user.is_authenticated %}     
             <h1 class="text-center">Olá, é bom te ver por aqui!</h1>
             <p class="lead text-center">Esta é a página inicial da FAM Digital</p>
@@ -22,4 +24,23 @@
         {% endif %}
     </div>
 </div>
+
+<main style="margin-bottom: 90px;">
+    <h2>Escolha uma opção:</h2>
+    <div class="opcoes " style=" margin-top: -10px;">
+        <div class="opcao">
+            <p>Funcionários</p>
+            <img src="{% static 'app/img/funcionario.png' %}" alt="Funcionários">
+        </div>
+        <div class="opcao ">
+            <p>Alunos</p>
+            <img src="{% static 'app/img/aluno.png' %}" alt="Alunos">
+        </div>
+        <div class="opcao ">
+            <p>Meu perfil</p>
+            <img src="{% static 'app/img/perfil.png' %}" alt="Meu perfil">
+        </div>
+    </div>
+</main>
+
 {% endblock content %}

@@ -1,0 +1,179 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Questrial';
+  font-style: normal;
+  font-weight: 400;
+  background-color: #f8ecd7;
+  color: #3a3636;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+header {
+  background-color: #494271;
+  color: #f8ecd7;
+  width: 100%;
+  padding-top: 3px;
+  text-align: center;
+}
+
+.logoFamDigital {
+  width: 10%;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 105px);
+  margin: 0;
+}
+
+.esquerda {
+  width: 30%;
+  padding-right: 20px;
+}
+
+.esquerda .logoFam {
+  width: 80%;
+}
+
+.esquerda .descricao {
+  margin-bottom: 20px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.esquerda .autor {
+  font-weight: bold;
+}
+
+.direita {
+  width: 30%;
+  border-radius: 8px;
+  font-family: "Questrial", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.direita h2 {
+  margin-bottom: 20px;
+  font-size: 40px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.campo {
+  background-color: #494271;
+  color: #f8ecd7;
+  width: 90%;
+  margin-bottom: 15px;
+  padding: 13px;
+  border: 1px solid #494271;
+  border-radius: 20px;
+}
+
+.campo::placeholder {
+  color: #9891bf;
+}
+
+.botao-container {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin-top: 20px;
+}
+
+.botao {
+  background-color: #494271;
+  color: #f8ecd7;
+  border: none;
+  padding: 13px 30px;
+  font-size: 15px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.botao:hover {
+  background-color: #2d2944;
+}
+
+.esqueceu {
+  margin-top: 10px;
+  color: #3a3636;
+  text-decoration: none;
+  text-align: left;
+  font-size: 1rem;
+  width: 90%;
+}
+
+.primeiro-acesso {
+  color: #3a3636;
+  text-decoration: none;
+  text-align: right;
+  font-size: 1rem;
+  width: 90%;
+  margin-top: 10px;
+}
+
+footer {
+  bottom: 0;
+  position: absolute;
+  font-size: 13px;
+  background-color: #494271;
+  color: #f8ecd7;
+  width: 100%;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.questrial-regular {
+  font-family: "Questrial", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 90%;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #3a3636;
+}
+
+.form-group input {
+  background-color: #f8ecd7;
+  color: #3a3636;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #494271;
+  border-radius: 5px;
+}
+
+.form-group input::placeholder {
+  color: #9891bf;
+}
