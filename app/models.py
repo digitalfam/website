@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Occupation(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nome')
     description = models.TextField(verbose_name='Descrição')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
+    created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
     def __str__(self):
         return self.name
@@ -27,10 +28,14 @@ class Profile(models.Model):
     address = models.CharField(max_length=200, verbose_name='Endereço')
     neighborhood = models.CharField(max_length=100, verbose_name='Bairro')
     number = models.CharField(max_length=10, verbose_name='Número')
-    urban_or_rural = models.CharField(max_length=10, choices=[('Urbano', 'Urbano'), ('Rural', 'Rural')], verbose_name='Zona')
+    urban_or_rural = models.CharField(
+        max_length=10,
+        choices=[('Urbano', 'Urbano'), ('Rural', 'Rural')],
+        verbose_name='Zona'
+    )
     city = models.CharField(max_length=100, default='Muzambinho-MG', verbose_name='Cidade')
     emergency_phone = models.CharField(max_length=15, verbose_name='Telefone de Emergência')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
+    created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
     def __str__(self):
         return self.user.username
@@ -40,7 +45,19 @@ class Profile(models.Model):
         verbose_name_plural = 'Perfis'
         ordering = ['user__username']
 
-class Employee(Profile):
+class Occupation(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Nome da Ocupação')
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = 'Ocupação'
+        verbose_name_plural = 'Ocupações'
+        ordering = ['name']
+
+class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Usuário')
     occupation = models.ForeignKey(Occupation, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Ocupação')
     salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name='Salário')
     admission = models.DateField(blank=True, null=True, verbose_name='Data de Admissão')
@@ -59,7 +76,7 @@ class DocumentEmployee(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='Funcionário')
     title = models.CharField(max_length=100, verbose_name='Título')
     file = models.FileField(upload_to='docs/funcionarios/', verbose_name='Arquivo')
-    uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Envio')
+    uploaded_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Envio')
 
     def __str__(self):
         return f'{self.employee.user.username} - {self.title}'
@@ -82,7 +99,7 @@ class Students(models.Model):
     city = models.CharField(max_length=100, default='Muzambinho-MG', verbose_name='Cidade')
     emergency_phone = models.CharField(max_length=15, verbose_name='Telefone de Emergência')
     photo = models.ImageField(upload_to='fotos/estudantes/', verbose_name='Foto')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
+    created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
     def __str__(self):
         return f'{self.name} {self.last_name}'
@@ -96,7 +113,7 @@ class DocumentStudent(models.Model):
     student = models.ForeignKey(Students, on_delete=models.CASCADE, verbose_name='Aluno')
     title = models.CharField(max_length=100, verbose_name='Título')
     file = models.FileField(upload_to='docs/estudantes/', verbose_name='Arquivo')
-    uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Envio')
+    uploaded_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Envio')
 
     def __str__(self):
         return f'{self.student.name} {self.student.last_name} - {self.title}'
@@ -111,7 +128,7 @@ class Class(models.Model):
     students = models.ManyToManyField(Students, verbose_name='Estudantes', related_name='classes')
     teacher = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Professor')
     shift = models.CharField(max_length=20, choices=[('Matutino', 'Matutino'), ('Vespertino', 'Vespertino')], verbose_name='Turno')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
+    created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
     def __str__(self):
         return self.name
@@ -127,7 +144,7 @@ class AttendanceStudents(models.Model):
     date = models.DateField(verbose_name='Data')
     present = models.BooleanField(default=False, verbose_name='Presente')
     notes = models.TextField(blank=True, null=True, verbose_name='Observações')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
+    created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
     def __str__(self):
         status = 'Presente' if self.present else 'Ausente'
@@ -142,7 +159,7 @@ class AttendanceStudents(models.Model):
 class Parents(Profile):
     son = models.ManyToManyField(Students, verbose_name='Filhos', related_name='parents')
     photo = models.ImageField(upload_to='pais/', verbose_name='Foto')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Criação')
+   
 
     def __str__(self):
         return self.user.username
@@ -156,7 +173,7 @@ class DocumentParent(models.Model):
     parent = models.ForeignKey(Parents, on_delete=models.CASCADE, verbose_name='Pai/Mãe')
     title = models.CharField(max_length=100, verbose_name='Título')
     file = models.FileField(upload_to='docs/pais/', verbose_name='Arquivo')
-    uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name='Data de Envio')
+    uploaded_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Envio')
 
     def __str__(self):
         return f'{self.parent.user.username} - {self.title}'
@@ -171,7 +188,7 @@ class AuditLog(models.Model):
     model_name = models.CharField(max_length=100, verbose_name='Modelo')
     object_id = models.PositiveIntegerField(verbose_name='ID do Objeto')
     action = models.CharField(max_length=50, verbose_name='Ação')
-    timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Data/Hora')
+    timestamp = models.DateTimeField(default=timezone.now, verbose_name='Data/Hora')
 
     def __str__(self):
         return f'{self.user.username} - {self.model_name} - {self.action}'

@@ -12,3 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    var someElement = document.getElementById("nonExistentElement");
+    if (someElement) {
+        someElement.style.display = "none";
+    }
+});

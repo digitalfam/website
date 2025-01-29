@@ -21,6 +21,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+   
 }
 
 header {
@@ -70,6 +71,7 @@ main {
     align-items: center;
     justify-content: center;
     height: 100%;
+   
 }
 
 main h2 {
@@ -88,7 +90,7 @@ main h2 {
 .opcao {
     color: #3a3636;
     border-radius: 10px;
-    padding: 15px; /* Increase padding */
+    padding: 5px; /* Increase padding */
     width: 200px; /* Increase width */
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -109,12 +111,13 @@ main h2 {
 }
 
 footer {
-    bottom: 0;
-    position: absolute;
-    font-size: 13px;
+    position: relative; 
+    margin-top: 50px; 
+    font-size: 15px;
     background-color: #494271;
     color: #f8ecd7;
     width: 100%;
     padding: 10px 0;
     text-align: center;
+    margin-top: auto;
 }

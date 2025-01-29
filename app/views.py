@@ -3,10 +3,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
-from .forms import LoginForm, ProfileForm
-from .models import Profile
+from .forms import *
+from .models import *
+from django.contrib import messages
 
 
+
+@method_decorator(login_required, name='dispatch')
 class IndexView(View):
     def get(self, request):
         return render(request, 'index.html')
@@ -54,8 +57,30 @@ class ProfileView(View):
         return render(request, 'profile.html', {'form': form})
     
 @method_decorator(login_required, name='dispatch')
-class StudentsView(View):
+class CreateEmployeeView(View):
     def get(self, request):
-        alunos = Profile.objects.filter(role='ALUNO')
-        return render(request, 'students.html', {'alunos': alunos})
-    
+        form = EmployeeCreationForm()
+        employees = Employee.objects.all()
+        occupations = Occupation.objects.all()
+        return render(request, 'cadastroFuncionario.html', {'form': form, 'employees': employees, 'occupations': occupations})
+
+    def post(self, request):
+        form = EmployeeCreationForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, 'Funcionário criado com sucesso!')
+                return redirect('employee')  # Substitua pelo nome da sua URL de listagem
+            except IntegrityError as e:
+                messages.error(request, f'Erro ao criar funcionário: {e}')
+        else:
+            messages.error(request, 'Erro ao criar funcionário. Verifique os dados inseridos.')
+        employees = Employee.objects.all()
+        occupations = Occupation.objects.all()
+        return render(request, 'cadastroFuncionario.html', {'form': form, 'employees': employees, 'occupations': occupations})
+
+@method_decorator(login_required, name='dispatch')
+class EmployeeView(View):
+    def get(self, request):
+        employees = Employee.objects.all()
+        return render(request, 'funcionarios.html', {'employees': employees})
