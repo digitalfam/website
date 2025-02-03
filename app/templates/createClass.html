@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Criar Turma{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/createClass.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="cabecalho">
+        <div class="header-container">
+            <h2>
+                <div class="img-container">
+                    <img src="{% static 'app/img/aluno.png' %}" alt="avatar_original da Turma" />
+                </div>
+                Criar Turma
+            </h2>
+        </div>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="left-column campo">
+                <label for="id_name">Nome da Turma:</label>
+                {{ form.name }}
+            </div>
+            <div class="right-column campo">
+                <label for="id_teacher">Professor:</label>
+                {{ form.teacher }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="left-column campo">
+                <label for="id_shift">Turno:</label>
+                {{ form.shift }}
+            </div>
+            <div class="left-column campo">
+                <label for="id_image">Imagem:</label>
+                {{ form.image }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="right-column" id="students">
+                <label for="id_students" style="color: #f8ecd7;">Estudantes:</label>
+                {{ form.students }}
+                {% for error in form.students.errors %}
+                <div class="error" style="color: whitesmoke; background-color: #ff0000; padding: 5px; border-radius: 5px; animation: fadeOut 2s forwards;" id="error-{{ forloop.counter }}">
+                    {{ error }}
+                </div>
+                <script>
+                    setTimeout(function() {
+                        document.getElementById('error-{{ forloop.counter }}').style.display = 'none';
+                    }, 2000);
+                </script>
+                {% endfor %}
+            </div>
+            <div class="actions">
+                <button type="submit" class="save">Salvar</button>
+                <button type="button" class="cancel" onclick="window.location.href='{% url 'class' %}'">Cancelar</button>
+            </div>
+        </div>
+       
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const studentsSelect = document.getElementById('id_students');
+        const choices = new Choices(studentsSelect, {
+            removeItemButton: true,
+            noResultsText: 'Nenhum resultado encontrado',
+            noChoicesText: 'Nenhuma escolha disponível',
+            itemSelectText: 'Clique para selecionar',
+            searchEnabled: true, // Enable search functionality
+            searchPlaceholderValue: 'Pesquisar...', // Placeholder for the search input
+            placeholderValue: 'Selecione os estudantes...', // Placeholder for the select input
+        });
+    });
+</script>
+{% endblock %}

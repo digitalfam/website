@@ -1,100 +1,25 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAMDigital - Início</title>
-    <link rel="stylesheet" id="style-css" href="{% static 'app/css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" href="{% static 'app/img/icon.ico' %}">
-    
-</head>
-
-<body>
-    <div>
-        <header>
-            <a href="{% url 'index' %}">
-            <img src="{% static 'app/img/logoFamDigital.png' %}" alt="Logo FAMDigital" class="logoFamDigital">
+<div class="container">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'app/img/logoFamDigital.png' %}" alt="Logo FAMDigital" class="logoFamDigital">
             </a>
-            <nav>
-            <button class="nav-toggle" aria-label="toggle navigation">
-            <i class="fa-solid fa-bars"></i>
+            <button class="navbar-toggler nav-toggle" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars"></i>
             </button>
-            <ul class="nav-list">
-            <li><a href="{% url 'index' %}">Início</a></li>
-            <li><a href="{% url 'employee' %}">Funcionários</a></li>
-            <li><a href="#">Alunos</a></li>
-            <li><a href="{% url 'profile' %}">Meu perfil</a></li>
-            <li><a href="{% url 'logout' %}" class="sair">Sair</a></li>
-            </ul>
-            </nav>
-        </header>
-
-        <style>
-            .nav-toggle {
-            display: none;
-            cursor: pointer;
-            }
-            
-            .menu-icon {
-            width: 25px;
-            height: 25px;
-            }
-
-            .nav-list {
-            display: flex;
-            list-style: none;
-            }
-
-            .nav-list li {
-            margin: 0 15px;
-            }
-
-            .nav-list a {
-            text-decoration: none;
-            color: #fff;
-            }
-
-            @media (max-width: 768px) {
-            .nav-toggle {
-            display: block;
-            }
-
-            .nav-list {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            position: absolute;
-            top: 60px;
-            left: 0;
-            background-color: #494271;
-            border-top: 1px solid #ccc;
-            }
-
-            .nav-list li {
-            margin: 10px 0;
-            text-align: center;
-            }
-
-            .nav-list.active {
-            display: flex;
-            }
-            }
-        </style>
-           
-
-        <script>
-            document.querySelector('.nav-toggle').addEventListener('click', () => {
-            document.querySelector('.nav-list').classList.toggle('active');
-            });
-        </script>
-
-        </div>
-    </body>
-
-</html>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto nav-list">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Início</a></li>
+                    {% if user.is_superuser %}
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'employee' %}">Funcionários</a></li>
+                    {% endif %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'student' %}">Alunos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}">Meu perfil</a></li>
+                    <li class="nav-item"><a class="nav-link sair" href="{% url 'logout' %}">Sair</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+</div>

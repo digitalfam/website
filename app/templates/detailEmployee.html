@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalhes do Funcionário{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/detailEmployee.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container mt-5" style="padding-top: 100px;">
+    <div class="main-content">
+        <div class="cabecalho">
+            <div class="header-container">
+                <div class="actions-container">
+                    <div class="actions">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'employee' %}'">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                    </button>
+                    </div>
+                </div>
+                <h2>
+                    <div class="img-container">
+                        {% if employee.photo %}
+                            <img src="{{ employee.photo.url }}" alt="Foto do Funcionário" class="img-thumbnail">
+                        {% else %}
+                            <img src="{% static 'app/img/avatar_original.png' %}" alt="Foto do Funcionário" class="img-thumbnail">
+                        {% endif %}
+                    </div>
+                    Detalhes do Funcionário
+                </h2>
+            </div>
+          
+        </div>
+        <div class="employee-details">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Nome de Usuário:</strong> {{ employee.user.username }}</p>
+                    <p><strong>Nome Completo:</strong><br> {{ employee.user.get_full_name }}</p>
+                    <p><strong>Email:</strong> {{ employee.user.email }}</p>
+                    <p><strong>Função:</strong> {{ profile.role }}</p>
+                    <p><strong>CPF:</strong> {{ profile.cpf|addslashes|slice:":3" }}.{{ profile.cpf|addslashes|slice:"3:6" }}.{{ profile.cpf|addslashes|slice:"6:9" }}-{{ profile.cpf|addslashes|slice:"9:11" }}</p>
+                    <p><strong>Telefone:</strong> ({{ profile.phone|slice:":2" }}) {{ profile.phone|slice:"2:7" }}-{{ profile.phone|slice:"7:11" }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Endereço:</strong> {{ profile.address }}</p>
+                    <p><strong>Bairro:</strong> {{ profile.neighborhood }}</p>
+                    <p><strong>Número:</strong> {{ profile.number }}</p>
+                    <p><strong>Zona:</strong> {{ profile.urban_or_rural }}</p>
+                    <p><strong>Cidade:</strong> {{ profile.city }}</p>
+                    <p><strong>Ocupação:</strong> {{ employee.occupation }}</p>
+                    <p><strong>Salário:</strong> {{ employee.salary }}</p>
+                    <p><strong>Data de Admissão:</strong><br> {{ employee.admission }}</p>
+                    <p><strong>Telefone de Emergência:</strong><br> ({{ profile.emergency_phone|slice:":2" }}) {{ profile.emergency_phone|slice:"2:7" }}-{{ profile.emergency_phone|slice:"7:11" }}</p>
+                </div>
+            </div>
+        </div>
+<div class="employee-documents mt-4" style="padding-bottom: 30px;">
+            <h3>Documentos</h3>
+            <div class="row">
+                {% for document in documents %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ document.title }}</h5>
+                            <p class="card-text">{{ document.description }}</p>
+                            <a href="{{ document.file.url }}" class="btn btn-primary" download>Baixar</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center">Nenhum documento disponível.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

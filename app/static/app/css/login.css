@@ -177,3 +177,16 @@ footer {
 .form-group input::placeholder {
   color: #9891bf;
 }
+
+.forgot-password {
+  margin-top: 15px;
+}
+
+.forgot-password a {
+  color: #494271;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}

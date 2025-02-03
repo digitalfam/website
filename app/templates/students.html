@@ -1,53 +1,124 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% load dict_extras %}
 {% block title %}Alunos{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/students.css' %}">
+{% endblock extra_css %}
 {% block content %}
-    <div class="container pt-4">
-        <div class="bg-body-tertiary p-5 rounded">
-            <h1 class="text-center">Painel de Alunos</h1>
-            <p class="lead text-center">Aqui você visualizar os alunos cadastrados.</p>
-        </div>
-        <div class="row align-items-center mt-3">
-            <div class="col-12 table-responsive">
-                {% if error %}
-                    <div>
-                        {% for err in error %}
-                            <div class="alert-custom alert alert-danger alert-dismissible" role="alert" id="message">
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                {{ err }}
-                            </div>
-                        {% endfor %}
+<div class="container" style="margin-top: -100px;">
+        <div class="cabecalho">
+            <div class="header-container">
+                <h2>
+                    <div class="img-container">
+                        <img src="{% static 'app/img/aluno.png' %}" alt="avatar_original do Aluno" />
                     </div>
-                {% endif %}
-                <table id="studentsTable" class="table table-striped dt-responsive nowrap" style="width:100%">
-                    {% if alunos %}
-                        <caption>Lista de alunos cadastrados</caption>
-                    {% endif %}
-                    <thead>
-                        <tr>
-                            <th scope="col">Nome</th>
-                            <th scope="col">CPF</th>
-                            <th scope="col">Celular</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if alunos %}
-                            {% for aluno in alunos %}
-                            <tr>
-                                <td>{{ aluno.user.username }}</td>
-                                <td>{{ aluno.cpf }}</td>
-                                <td>{{ aluno.phone }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="9" class="text-center text-muted">Ainda não foi registrado nenhum aluno.</td>
-                            </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+                    Alunos
+                </h2>
+            </div>
+            {% if messages %}
+            <div id="message-modal" class="modal">
+                <div class="modal-content">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var messageModal = document.getElementById("message-modal");
+                    if (messageModal) {
+                        setTimeout(function() {
+                            messageModal.style.display = "none";
+                        }, 2000);
+                    }
+                });
+            </script>
+            {% endif %}
+            {% if user.is_superuser %}
+            <div class="button-container">
+                <div class="add-student">
+                    <a href="{% url 'create_student' %}">
+                        <button type="button" class="add">Adicionar</button>
+                    </a>
+                </div>
+            </div>
+            <div class="button-container"></div>
+                <div class="add-student">
+                    <a href="{% url 'class' %}">
+                        <button type="button" class="add">Turmas</button>
+                    </a>
+                </div>
+            
+            {% endif %}
+            <div class="add-student">
+                <a href="">
+                    <button type="button" class="add">Frequência</button>
+                </a>
             </div>
         </div>
+        <div class="search-container">
+            <form method="get" action="{% url 'student' %}">
+            <input type="text" name="search" placeholder="Pesquisar aluno" value="{{ search }}">
+            <button type="submit"><i class="fas fa-search"></i></button>
+            <button type="button" onclick="window.location.href='{% url 'student' %}'">Limpar</button>
+            </form>
+        </div>
+        <div class="student-table">
+            <div class="student-header">
+                <div class="student-photo">Foto</div>
+                <div class="student-name">Nome</div>
+                <div class="student-class">Turma</div>
+                <div class="student-actions">Ações</div>
+            </div>
+         
+                {% for students in students %}
+                <div class="student-row">
+                    <div class="student-photo">
+                        {% if students.photo %}
+                            <img src="{{ students.photo.url }}" alt="Foto do Aluno">
+                        {% else %}
+                            <img src="{% static 'app/img/avatar_original.png' %}" alt="Foto do Aluno">
+                        {% endif %}
+                    </div>
+                    <div class="student-name">{{ students.name }} {{ students.last_name }}</div>
+                    <div class="student-class">
+                        {% with turmas=student_classes|get_item:students.pk %}
+                            {% if turmas %}
+                                {% for turma in turmas %}
+                                    {{ turma.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                Sem turma
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                    <div class="student-actions">
+                      
+                        <button class="view" onclick="window.location.href='{% url 'student_detail' students.pk %}'"><i class="fa-regular fa-eye"></i></button>
+                        {% if user.is_superuser %}
+                        <button class="edit" onclick="window.location.href='{% url 'update_student' students.pk %}'"><i class="fa-regular fa-pen-to-square"></i></button>
+                        <button class="document" onclick="window.location.href='{% url 'create_student_document' student_pk=students.pk %}'">
+                            <i class="fa-regular fa-file"></i>
+                        </button>
+                        <form method="post" action="{% url 'delete_student' students.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="delete"><i class="fa-regular fa-trash-can"></i></button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+      
+        
+     
+        </div>
     </div>
+
+    <script>
+        function redirectToPage() {
+            window.location.href = 'createStudent.html';
+        }
+    </script>
 {% endblock %}

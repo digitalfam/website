@@ -239,7 +239,7 @@ input[type="date"]::placeholder {
     background-position: center;
     border-radius: 50%;
     background-color: #f8ecd7;
-    background-image: url('./img/avatar.png'); /* Default image */
+    background-image: url('./img/avatar_original.png'); /* Default image */
     position: relative;
     filter: brightness(0.7); /* Darken the image */
 }

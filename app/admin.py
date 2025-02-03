@@ -1,5 +1,11 @@
 from django.contrib import admin
-from .models import *
+from .models import Occupation, DocumentEmployee, DocumentStudent, DocumentParent, Employee, Profile, Students, Class, AttendanceStudents, Parents, AuditLog
+
+@admin.register(Occupation)
+class OccupationAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    ordering = ['name']
 
 # Inlines para documentos
 class DocumentEmployeeInline(admin.TabularInline):
@@ -27,12 +33,7 @@ class EmployeeInline(admin.StackedInline):
     verbose_name_plural = 'Funcionário'
     fk_name = 'user'
 
-# Admin Registrations
-@admin.register(Occupation)
-class OccupationAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
-    ordering = ['name']
+
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -65,7 +66,7 @@ class DocumentEmployeeAdmin(admin.ModelAdmin):
 
 @admin.register(Students)
 class StudentsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'last_name', 'birth_date', 'city', 'emergency_phone', 'created_at')
+    list_display = ('enrollment_number','name', 'last_name', 'birth_date', 'city', 'emergency_phone','observations', 'created_at')
     search_fields = ('name', 'last_name', 'city')
     list_filter = ('city', 'created_at')
     ordering = ['name', 'last_name']
@@ -80,7 +81,7 @@ class DocumentStudentAdmin(admin.ModelAdmin):
 
 @admin.register(Class)
 class ClassAdmin(admin.ModelAdmin):
-    list_display = ('name', 'teacher', 'shift', 'created_at')
+    list_display = ('name', 'teacher', 'shift','image', 'created_at')
     search_fields = ('name', 'teacher__username')
     list_filter = ('shift', 'created_at')
     ordering = ['name']

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cadastro de Alunos{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/createStudent.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="main-content">
+        <div class="cabecalho">
+            <div class="header-container">
+                <h2>
+                    <div class="img-container">
+                        <img src="{% static 'app/img/aluno.png' %}" alt="avatar_original do Aluno" />
+                    </div>
+                    Cadastro de Alunos
+                </h2>
+            </div>
+            {% if messages %}
+            <div id="message-modal" class="modal">
+                <div class="modal-content">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var messageModal = document.getElementById("message-modal");
+                    if (messageModal) {
+                        setTimeout(function() {
+                            messageModal.style.display = "none";
+                        }, 2000);
+                    }
+                });
+            </script>
+            {% endif %}
+           
+            <div class="actions-container">
+                <div class="actions">
+                    <button type="button" class="cancel" onclick="window.location.href='{% url 'student' %}'">Cancelar</button>
+                    <button type="submit" class="save" form="student-form">Salvar</button>
+                </div>
+            </div>
+        </div>
+        <form id="student-form" action="{% url 'create_student' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="left-column">
+                    <label for="enrollment_number">Matrícula</label>
+                    <input type="text" id="enrollment_number" name="enrollment_number" placeholder="Matrícula" class="campo">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" placeholder="Nome" class="campo">
+                    <label for="last_name">Sobrenome</label>
+                    <input type="text" id="last_name" name="last_name" placeholder="Sobrenome" class="campo">
+                    <label for="birth_date">Data de nascimento</label>
+                    <input type="date" id="birth_date" name="birth_date" class="campo">
+                    <label for="cpf">CPF</label>
+                    <input type="text" id="cpf" name="cpf" placeholder="CPF" class="campo">
+                    <label for="mother_name">Nome da Mãe</label>
+                    <input type="text" id="mother_name" name="mother_name" placeholder="Nome da Mãe" class="campo">
+                    <label for="father_name">Nome do Pai</label>
+                    <input type="text" id="father_name" name="father_name" placeholder="Nome do Pai" class="campo">
+                </div>
+                <div class="middle-column">
+                    <label for="address">Endereço</label>
+                    <input type="text" id="address" name="address" placeholder="Endereço" class="campo">
+                    <label for="neighborhood">Bairro</label>
+                    <input type="text" id="neighborhood" name="neighborhood" placeholder="Bairro" class="campo">
+                    <label for="number">Número</label>
+                    <input type="text" id="number" name="number" placeholder="Número" class="campo">
+                    <label for="urban_or_rural">Zona</label>
+                    <select id="urban_or_rural" name="urban_or_rural" class="campo">
+                        <option value="Urbano">Urbana</option>
+                        <option value="Rural">Rural</option>
+                    </select>
+                    <label for="city">Cidade</label>
+                    <input type="text" id="city" name="city" placeholder="Cidade" class="campo" value="Muzambinho-MG">
+                    <label for="emergency_phone">Telefone de Emergência</label>
+                    <input type="tel" id="emergency_phone" name="emergency_phone" placeholder="Telefone de Emergência" class="campo">
+            
+                    <label for="observations">Observações</label>
+                    <textarea id="observations" name="observations" placeholder="Observações" class="campo"></textarea>
+                </div>
+                <div class="right-column">
+                    <label for="photo" class="upload-label">
+                        <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(event)">
+                        <div class="image-preview" id="image-preview" style="background-image: url('{% static 'app/img/avatar_original.png' %}');"></div>
+                        <div class="edit-icon"><i class="fa-regular fa-pen-to-square"></i></div>
+                    </label>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const output = document.getElementById('image-preview');
+            output.style.backgroundImage = `url(${reader.result})`;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+{% endblock content %}

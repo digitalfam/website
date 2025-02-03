@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Estudante{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/updateStudent.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="update-student-container top">
+    <div class="header-section">
+        <div class="img-container">
+            <img src="{% static 'app/img/aluno.png' %}" alt="avatar_original do Estudante" />
+        </div>
+        <h1>Editar Estudante</h1>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-column">
+                <fieldset>
+                    <legend>Dados do Estudante</legend>
+                    {{ student_form.name.errors }}
+                    <label for="{{ student_form.name.id_for_label }}">Nome:</label>
+                    {{ student_form.name }}
+                    
+                    {{ student_form.last_name.errors }}
+                    <label for="{{ student_form.last_name.id_for_label }}">Sobrenome:</label>
+                    {{ student_form.last_name }}
+                    
+                    {{ student_form.birth_date.errors }}
+                    <label for="{{ student_form.birth_date.id_for_label }}">Data de Nascimento:</label>
+                    {{ student_form.birth_date }}
+                </fieldset>
+            </div>
+            <div class="form-column">
+                <fieldset>
+                    <legend>Informações Adicionais</legend>
+                    {{ student_form.cpf.errors }}
+                    <label for="{{ student_form.cpf.id_for_label }}">CPF:</label>
+                    {{ student_form.cpf }}
+                    
+                    {{ student_form.mother_name.errors }}
+                    <label for="{{ student_form.mother_name.id_for_label }}">Nome da Mãe:</label>
+                    {{ student_form.mother_name }}
+                    
+                    {{ student_form.father_name.errors }}
+                    <label for="{{ student_form.father_name.id_for_label }}">Nome do Pai:</label>
+                    {{ student_form.father_name }}
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-column">
+                <fieldset>
+                    <legend>Endereço e Contato</legend>
+                    {{ student_form.address.errors }}
+                    <label for="{{ student_form.address.id_for_label }}">Endereço:</label>
+                    {{ student_form.address }}
+                    
+                    {{ student_form.neighborhood.errors }}
+                    <label for="{{ student_form.neighborhood.id_for_label }}">Bairro:</label>
+                    {{ student_form.neighborhood }}
+                    
+                    {{ student_form.number.errors }}
+                    <label for="{{ student_form.number.id_for_label }}">Número:</label>
+                    {{ student_form.number }}
+                    
+                    {{ student_form.urban_or_rural.errors }}
+                    <label for="{{ student_form.urban_or_rural.id_for_label }}">Zona Urbana ou Rural:</label>
+                    {{ student_form.urban_or_rural }}
+                    
+                    {{ student_form.city.errors }}
+                    <label for="{{ student_form.city.id_for_label }}">Cidade:</label>
+                    {{ student_form.city }}
+                    
+                    {{ student_form.emergency_phone.errors }}
+                    <label for="{{ student_form.emergency_phone.id_for_label }}">Telefone de Emergência:</label>
+                    {{ student_form.emergency_phone }}
+                </fieldset>
+            </div>
+            <div class="form-column">
+                <fieldset>
+                    <legend>Informações Acadêmicas</legend>
+                    {{ student_form.enrollment_number.errors }}
+                    <label for="{{ student_form.enrollment_number.id_for_label }}">Número de Matrícula:</label>
+                    {{ student_form.enrollment_number }}
+                    
+                    <legend>Foto e Observações</legend>
+                    {{ student_form.photo.errors }}
+                    <label for="{{ student_form.photo.id_for_label }}">Foto:</label>
+                    {{ student_form.photo }}
+                    
+                    {{ student_form.observations.errors }}
+                    <label for="{{ student_form.observations.id_for_label }}">Observações:</label>
+                    {{ student_form.observations }}
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'student_detail' student.pk %}'">Cancelar</button>
+        </div>
+        </div>
+       
+    </form>
+{% endblock content %}

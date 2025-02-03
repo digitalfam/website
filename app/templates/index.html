@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block title %}Página Inicial{% endblock title %}
-
 {% block content %}
 
 <div class="container pt-4">
@@ -17,7 +16,7 @@
             </div>
         </a>
         {% endif %}
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" href="{% url 'student' %}">
             <div class="opcao">
                 <img src="{% static 'app/img/aluno.png' %}" alt="Alunos">
                 <p>Alunos</p>
@@ -31,4 +30,12 @@
         </a>
     </div>
 </main>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var styleCss = document.getElementById("style-css");
+        if (styleCss) {
+            styleCss.parentNode.removeChild(styleCss);
+        }
+    });
+</script>
 {% endblock content %}

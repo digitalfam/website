@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -6,6 +6,8 @@ from django.views import View
 from .forms import *
 from .models import *
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+ 
 
 
 
@@ -44,25 +46,42 @@ class LogoutView(View):
 @method_decorator(login_required, name='dispatch')
 class ProfileView(View):
     def get(self, request):
-        profile, created = Profile.objects.get_or_create(user=request.user)
-        form = ProfileForm(instance=profile)
-        return render(request, 'profile.html', {'form': form})
+        user = request.user
+        profile = get_object_or_404(Profile, user=user)
+        try:
+            employee = Employee.objects.get(user=user)
+        except Employee.DoesNotExist:
+            employee = None
+        parents = Parents.objects.filter(user=user)
+        context = {
+            'user': user,
+            'profile': profile,
+            'employee': employee,
+            'parents': parents,
+        }
+        return render(request, 'profile.html', context)
 
     def post(self, request):
-        profile, created = Profile.objects.get_or_create(user=request.user)
-        form = ProfileForm(request.POST, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-        return render(request, 'profile.html', {'form': form})
+        # Lógica para atualização do perfil pode ser implementada aqui.
+        pass
     
+@method_decorator(staff_member_required, name='dispatch')
+class EmployeeView(View):
+    def get(self, request):
+        search_query = request.GET.get('search', '')
+        if search_query:
+            employees = Employee.objects.filter(user__first_name__icontains=search_query).order_by('user__first_name')
+        else:
+            employees = Employee.objects.all().order_by('user__first_name')
+        return render(request, 'employees.html', {'employees': employees, 'search': search_query})
+       
 @method_decorator(login_required, name='dispatch')
 class CreateEmployeeView(View):
     def get(self, request):
         form = EmployeeCreationForm()
         employees = Employee.objects.all()
         occupations = Occupation.objects.all()
-        return render(request, 'cadastroFuncionario.html', {'form': form, 'employees': employees, 'occupations': occupations})
+        return render(request, 'createEmployee.html', {'form': form, 'employees': employees, 'occupations': occupations})
 
     def post(self, request):
         form = EmployeeCreationForm(request.POST, request.FILES)
@@ -77,10 +96,204 @@ class CreateEmployeeView(View):
             messages.error(request, 'Erro ao criar funcionário. Verifique os dados inseridos.')
         employees = Employee.objects.all()
         occupations = Occupation.objects.all()
-        return render(request, 'cadastroFuncionario.html', {'form': form, 'employees': employees, 'occupations': occupations})
+        return render(request, 'createEmployee.html', {'form': form, 'employees': employees, 'occupations': occupations})
 
+
+    
+@method_decorator(staff_member_required, name='dispatch')
+class DeleteEmployeeView(View):
+    def post(self, request, pk):
+        employee = Employee.objects.get(id=pk)
+        employee.delete()
+        messages.success(request, 'Funcionário deletado com sucesso!')
+        return redirect('employee')
+
+@method_decorator(staff_member_required, name='dispatch')
+class UpdateEmployeeView(View):
+    def get(self, request, pk):
+        employee = get_object_or_404(Employee, pk=pk)
+        profile = get_object_or_404(Profile, user=employee.user)
+        user_obj = employee.user
+        employee_form = EmployeeUpdateForm(instance=employee)
+        profile_form = ProfileUpdateForm(instance=profile)
+        user_form = UserUpdateForm(instance=user_obj)
+        context = {
+            'employee': employee,
+            'user': user_obj,
+            'employee_form': employee_form,
+            'profile_form': profile_form,
+            'user_form': user_form,
+        }
+        return render(request, 'updateEmployee.html', context)
+
+    def post(self, request, pk):
+        employee = get_object_or_404(Employee, pk=pk)
+        profile = get_object_or_404(Profile, user=employee.user)
+        user_obj = employee.user
+        employee_form = EmployeeUpdateForm(request.POST, request.FILES, instance=employee)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        user_form = UserUpdateForm(request.POST, instance=user_obj)
+        if employee_form.is_valid() and profile_form.is_valid() and user_form.is_valid():
+            employee_form.save()
+            profile_form.save()
+            user_form.save()
+            messages.success(request, "Funcionário atualizado com sucesso!")
+            return redirect('employee')
+        context = {
+            'employee': employee,
+            'user': user_obj,
+            'employee_form': employee_form,
+            'profile_form': profile_form,
+            'user_form': user_form,
+        }
+        return render(request, 'employee.html', context)
+
+@method_decorator(staff_member_required, name='dispatch')
+class EmployeeDetailView(View):
+    def get(self, request, id):
+        employee = Employee.objects.get(id=id)
+        documents = DocumentEmployee.objects.filter(employee=employee)
+        profile = Profile.objects.get(user=employee.user)
+        return render(request, 'detailEmployee.html', {'employee': employee, 'documents': documents, 'profile': profile})
+
+@method_decorator(staff_member_required, name='dispatch')
+class CreateEmployeeDocumentView(View):
+    def get(self, request, employee_pk):
+        employee = get_object_or_404(Employee, pk=employee_pk)
+        # Preenche o campo 'employee' e pode ocultá-lo no template, se desejado.
+        form = DocumentEmployeeForm(initial={'employee': employee.pk})
+        return render(request, 'createEmployeeDocument.html', {
+            'employee': employee,
+            'form': form,
+        })
+
+    def post(self, request, employee_pk):
+        employee = get_object_or_404(Employee, pk=employee_pk)
+        form = DocumentEmployeeForm(request.POST, request.FILES)
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.employee = employee
+            document.save()
+            # Redirecione para uma página desejada, p. ex. detalhes do funcionário.
+            return redirect('employee_detail', id=employee.pk)
+        return render(request, 'createEmployeeDocument.html', {
+            'employee': employee,
+            'form': form,
+        })
+        
+
+    
 @method_decorator(login_required, name='dispatch')
-class EmployeeView(View):
+class StudentView(View):
     def get(self, request):
-        employees = Employee.objects.all()
-        return render(request, 'funcionarios.html', {'employees': employees})
+        search_query = request.GET.get('search', '')
+        if search_query:
+            students = Students.objects.filter(name__icontains=search_query).order_by('name')
+        else:
+            students = Students.objects.all().order_by('name')
+        classes = Class.objects.all()
+        student_classes = {student.pk: student.classes.all() for student in students}
+        return render(request, 'students.html', {
+            'students': students,
+            'classes': classes,
+            'student_classes': student_classes,
+            'search': search_query,
+        })
+        
+@method_decorator(staff_member_required, name='dispatch')     
+class CreateStudentView(View):
+    def get(self, request):
+        student_form = StudentForm()
+        return render(request, 'createStudent.html', {
+            'student_form': student_form,
+        })
+
+    def post(self, request):
+        student_form = StudentForm(request.POST, request.FILES)
+        if student_form.is_valid():
+            student_form.save()
+            messages.success(request, 'Aluno criado com sucesso!')
+            return redirect('student')  # Redirecione para a lista de alunos após o cadastro
+        messages.error(request, 'Erro ao criar aluno. Verifique os dados inseridos.')
+        print(student_form.errors)
+        return render(request, 'createStudent.html', {
+            'student_form': student_form,
+        })
+
+@method_decorator(staff_member_required, name='dispatch')
+class CreateStudentDocumentView(View):
+    def get(self, request, student_pk):
+        student = get_object_or_404(Students, pk=student_pk)
+        form = DocumentStudentForm(initial={'student': student.pk})
+        return render(request, 'createStudentDocument.html', {
+            'student': student,
+            'form': form,
+        })
+
+    def post(self, request, student_pk):
+        student = get_object_or_404(Students, pk=student_pk)
+        form = DocumentStudentForm(request.POST, request.FILES)
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.student = student
+            document.save()
+            return redirect('student')
+        return render(request, 'createStudentDocument.html', {
+            'student': student,
+            'form': form,
+        })
+        
+@method_decorator(login_required, name='dispatch')
+class StudentDetailView(View):
+    def get(self, request, id):
+        student = Students.objects.get(id=id)
+        documents = DocumentStudent.objects.filter(student=student)
+        return render(request, 'detailStudent.html', {'student': student, 'documents': documents})
+    
+@method_decorator(staff_member_required, name='dispatch')
+class DeleteStudentView(View):
+    def post(self, request, pk):
+        student = Students.objects.get(id=pk)
+        student.delete()
+        messages.success(request, 'Aluno deletado com sucesso!')
+        return redirect('student')
+    
+@method_decorator(staff_member_required, name='dispatch')
+class UpdateStudentView(View):
+    def get(self, request, pk):
+        student = get_object_or_404(Students, pk=pk)
+        form = StudentUpdateForm(instance=student)
+        return render(request, 'updateStudent.html', {'student_form': form, 'student': student})
+
+    def post(self, request, pk):
+        student = get_object_or_404(Students, pk=pk)
+        form = StudentUpdateForm(request.POST, request.FILES, instance=student)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Aluno atualizado com sucesso!")
+            return redirect('student')  # Redirecione para a lista de alunos ou detalhe do aluno
+        messages.error(request, "Erro ao atualizar aluno. Verifique os dados informados.")
+        return render(request, 'updateStudent.html', {'student_form': form, 'student': student})
+    
+@method_decorator(staff_member_required, name='dispatch')
+class ClassView(View):
+    def get(self, request):
+        classes = Class.objects.all
+        return render(request, 'class.html', {'classes': classes})
+
+@method_decorator(staff_member_required, name='dispatch')
+class CreateClassView(View):
+    def get(self, request):
+        form = ClassForm()
+        students = Students.objects.all()
+        return render(request, 'createClass.html', {'form': form, 'students': students})
+
+    def post(self, request):
+        form = ClassForm(request.POST, request.FILES)  # Certifique-se de passar request.FILES aqui
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Turma criada com sucesso!')
+            return redirect('class')  # Redirecione para a lista de turmas ou outra página desejada
+        messages.error(request, 'Erro ao criar turma. Verifique os dados inseridos.')
+        students = Students.objects.all()
+        return render(request, 'createClass.html', {'form': form, 'students': students})

@@ -2,18 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-class Occupation(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Nome')
-    description = models.TextField(verbose_name='Descrição')
-    created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'Ocupação'
-        verbose_name_plural = 'Ocupações'
-        ordering = ['name']
 
 class Profile(models.Model):
     ROLE_CHOICES = (
@@ -90,6 +79,7 @@ class Students(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nome')
     last_name = models.CharField(max_length=100, verbose_name='Sobrenome')
     birth_date = models.DateField(verbose_name='Data de Nascimento')
+    cpf = models.CharField(max_length=14, verbose_name='CPF', unique=True)
     mother_name = models.CharField(max_length=100, verbose_name='Nome da Mãe')
     father_name = models.CharField(max_length=100, verbose_name='Nome do Pai')
     address = models.CharField(max_length=200, verbose_name='Endereço')
@@ -99,6 +89,8 @@ class Students(models.Model):
     city = models.CharField(max_length=100, default='Muzambinho-MG', verbose_name='Cidade')
     emergency_phone = models.CharField(max_length=15, verbose_name='Telefone de Emergência')
     photo = models.ImageField(upload_to='fotos/estudantes/', verbose_name='Foto')
+    enrollment_number = models.CharField(max_length=20, unique=True, verbose_name='Número de Matrícula')
+    observations = models.TextField(blank=True, null=True, verbose_name='Observações')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
     def __str__(self):
@@ -126,8 +118,9 @@ class DocumentStudent(models.Model):
 class Class(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nome')
     students = models.ManyToManyField(Students, verbose_name='Estudantes', related_name='classes')
-    teacher = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Professor')
+    teacher = models.ForeignKey(Employee, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Professor')
     shift = models.CharField(max_length=20, choices=[('Matutino', 'Matutino'), ('Vespertino', 'Vespertino')], verbose_name='Turno')
+    image = models.ImageField(upload_to='fotos/turmas/', verbose_name='Foto')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
     def __str__(self):

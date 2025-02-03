@@ -1,7 +1,7 @@
-body {
-    font-family: 'Questrial';
-    font-style: normal;
-    font-weight: 400;
+body, html {
+    font-family: 'Questrial', sans-serif;
+    margin: 0;
+    padding: 0;
     background-color: #f8ecd7;
     color: #3a3636;
     display: flex;
@@ -9,7 +9,8 @@ body {
     align-items: stretch;
     justify-content: flex-start;
     min-height: 100vh;
-    margin: 0;
+    padding-top: -100px; 
+    margin-top:-30px ;/* ajuste conforme a altura do seu header */
 }
 
 header {
@@ -43,8 +44,8 @@ header ul {
     width: 100%;
     margin: 30px auto;
     padding: 20px;
-    margin-top: 100px;
     flex: 1;
+    background-color: transparent; /* Remove background color */
 }
 
 .header-container {
@@ -99,6 +100,24 @@ header ul {
     border: 1px solid #494271;
     border-radius: 20px;
 }
+/* Estilos específicos para o campo de seleção de estudantes */
+.choices__list--multiple .choices__item {
+    background-color: #494271;
+    color: #ffffff;
+    border: 1px solid #000000; /* Added black border */
+}
+
+.choices__list--multiple .choices__item--selectable {
+    background-color: #494271; /* Ensure selectable items have the same background */
+}
+#students {
+    background-color: #494271;
+  
+    width: 90%;
+    padding: 13px;
+    border: 1px solid #494271;
+    border-radius: 20px;
+}
 
 .campo::placeholder {
     color: #9891bf;
@@ -118,21 +137,15 @@ header ul {
     gap: 5px;
 }
 
-.right-column {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 label {
     margin-bottom: 0px;
 }
 
-.right-column .upload-label {
+.upload-label {
     align-self: center;
 }
 
-.right-column .label {
+.label {
     align-self: flex-start;
     margin-left: 23px;
 }
@@ -146,7 +159,9 @@ label {
     font-weight: bold;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
     padding: 10px;
     border-radius: 50px;
     font-size: 16px;
@@ -219,7 +234,7 @@ label {
     background-position: center;
     border-radius: 50%;
     background-color: #f8ecd7;
-    background-image: url('../img/avatar.png');
+    background-image: url('../img/avatar_original.png');
     /* Default image */
     position: relative;
     filter: brightness(0.7);
@@ -263,7 +278,6 @@ form {
 }
 
 @media (max-width: 768px) {
-
     .form-group {
         grid-template-columns: 1fr;
         /* Exibir apenas uma coluna em telas pequenas */
@@ -308,7 +322,7 @@ form {
         font-size: 33px;
         width: 100%;
     }
-    
+
     form {
         width: 100%;
     }
@@ -325,4 +339,40 @@ form {
         width: 90%;
         text-align: center;
     }
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #f8ecd7;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #494271;
+    width: 80%;
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
 }

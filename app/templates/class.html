@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load dict_extras %}
+{% block title %}Turmas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/class.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container">
+    <div class="cabecalho">
+        <div class="header-container">
+            <h2>
+                <div class="img-container">
+                    <img src="{% static 'app/img/aluno.png' %}" alt="avatar_original da Classe" />
+                </div>
+                Turmas
+            </h2>
+        </div>
+        {% if messages %}
+        <div id="message-modal" class="modal">
+            <div class="modal-content">
+                {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageModal = document.getElementById("message-modal");
+            if (messageModal) {
+                setTimeout(function() {
+                    messageModal.style.display = "none";
+                }, 2000);
+            }
+        });
+        </script>
+        {% endif %}
+        {% if user.is_superuser %}
+        <div class="button-container">
+            <div class="add-class">
+                <a href="{% url 'create_class' %}">
+                    <button type="button" class="add">Adicionar</button>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="class-cards">
+        {% for class in classes %}
+        <div class="class-card">
+            <div class="class-header">
+                <h3>{{ class.name }}</h3>
+                <p>Professor: {{ class.teacher.user.first_name }} {{ class.teacher.user.last_name }}</p>
+                {% if class.image %}
+                <img src="{{ class.image.url }}" alt="Foto da Classe" class="class-image"/>
+                {% else %}
+                <img src="{% static 'app/img/logoFamDigital.png' %}" alt="Foto da Classe" class="class-image"/>
+                {% endif %}
+                <button class="dropdown-btn" onclick="toggleDropdown({{ class.pk }})">Alunos</button>
+            </div>
+            <div id="dropdown-{{ class.pk }}" class="dropdown-content" style="display: none;">
+                <ul>
+                    {% for student in class.students.all %}
+                    <li>{{ forloop.counter }}. {{ student.name }} {{ student.last_name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+function toggleDropdown(classId) {
+    var dropdown = document.getElementById('dropdown-' + classId);
+    if (dropdown.style.display === 'none') {
+        dropdown.style.display = 'block';
+    } else {
+        dropdown.style.display = 'none';
+    }
+}
+</script>
+{% endblock %}

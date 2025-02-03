@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalhes do Estudante{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/detailStudent.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container mt-5" style="padding-top: 100px;">
+    <div class="main-content">
+        <div class="cabecalho">
+            <div class="header-container">
+                <div class="actions-container">
+                    <div class="actions">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'student' %}'">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                    </div>
+                </div>
+                <h2>
+                    <div class="img-container">
+                        {% if student.photo %}
+                            <img src="{{ student.photo.url }}" alt="Foto do Estudante" class="img-thumbnail">
+                        {% else %}
+                            <img src="{% static 'app/img/avatar_original.png' %}" alt="Foto do Estudante" class="img-thumbnail">
+                        {% endif %}
+                    </div>
+                    Detalhes do Estudante
+                </h2>
+            </div>
+        </div>
+        <div class="student-details">
+            <div class="row">
+            <div class="col-md-6">
+                <p><strong>Número de Matrícula:</strong> {{ student.enrollment_number }}</p>
+                <p><strong>Nome Completo:</strong><br> {{ student.name }} {{ student.last_name }}</p>
+                <p><strong>CPF:</strong> {{ student.cpf|addslashes|slice:":3" }}.{{ student.cpf|addslashes|slice:"3:6" }}.{{ student.cpf|addslashes|slice:"6:9" }}-{{ student.cpf|addslashes|slice:"9:11" }}</p>
+                <p><strong>Data de Nascimento:</strong><br> {{ student.birth_date }}</p>
+                <p><strong>Nome da Mãe:</strong><br>  {{ student.mother_name }}</p>
+                <p><strong>Nome do Pai:</strong><br>  {{ student.father_name }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Endereço:</strong> {{ student.address }}</p>
+                <p><strong>Bairro:</strong> {{ student.neighborhood }}</p>
+                <p><strong>Número:</strong> {{ student.number }}</p>
+                <p><strong>Zona:</strong> {{ student.urban_or_rural }}</p>
+                <p><strong>Cidade:</strong> {{ student.city }}</p>
+                <p><strong>Telefone de Emergência:</strong><br> ({{ student.emergency_phone|slice:":2" }}) {{ student.emergency_phone|slice:"2:7" }}-{{ student.emergency_phone|slice:"7:11" }}</p>
+                {% if student.observations %}
+                <p><strong>Observações:</strong> {{ student.observations }}</p>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+        <div class="student-documents mt-4" style="padding-bottom: 30px;">
+            <h3>Documentos</h3>
+            <div class="row">
+                {% for document in documents %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class=
+                            <h5 class="card-title">{{ document.title }}</h5>
+                            <p class="card-text">{{ document.description }}</p>
+                            <a href="{{ document.file.url }}" class="btn btn-primary" download>Baixar</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center">Nenhum documento disponível.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

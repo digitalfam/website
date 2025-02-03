@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Funcionário{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/employee.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<div class="container" style="margin-top: -100px;">
+    <div class="cabecalho">
+        <div class="header-container">
+            <h2>
+                <div class="img-container">
+                    <img src="{% static 'app/img/funcionario.png' %}" alt="avatar_original do Funcionario" />
+                </div>
+                Funcionários
+            </h2>
+        </div>
+        <div class="button-container">
+            <div class="add-employee">
+            <button type="button" class="add" onclick="redirectToPage()">Adicionar</button>
+            </div>
+        </div>
+
+    </div>
+    {% if messages %}
+    <div id="message-modal" class="modal">
+        <div class="modal-content">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageModal = document.getElementById("message-modal");
+            if (messageModal) {
+                setTimeout(function() {
+                    messageModal.style.display = "none";
+                }, 2000);
+            }
+        });
+    </script>
+    {% endif %}
+    <div class="search-container">
+        <form method="get" action="{% url 'employee' %}">
+            <input type="text" name="search" placeholder="Pesquisar funcionário" value="{{ search }}">
+            <button type="submit"><i class="fas fa-search"></i></button>
+            <button type="button" onclick="window.location.href='{% url 'employee' %}'">Limpar</button>
+        </form>
+    </div>
+    <div class="employee-table">
+        <div class="employee-header">
+            <div class="employee-photo">Foto</div>
+            <div class="employee-name">Nome</div>
+            <div class="employee-position">Cargo</div>
+            <div class="employee-actions">Ações</div>
+        </div>
+        {% for employee in employees %}
+        <div class="employee-row">
+            <div class="employee-photo">
+                {% if employee.photo %}
+                    <img src="{{ employee.photo.url }}" alt="Foto do Funcionário">
+                {% else %}
+                    <img src="{% static 'app/img/avatar_original.png' %}" alt="Foto do Funcionário">
+                {% endif %}
+            </div>
+            <div class="employee-name">{{ employee.user.username }}</div>
+            <div class="employee-position">{{ employee.occupation }}</div>
+            <div class="employee-actions">
+                <button class="view" onclick="window.location.href='{% url 'employee_detail' employee.pk %}'"><i class="fa-regular fa-eye"></i></button>
+                <button class="edit" onclick="window.location.href='{% url 'update_employee' pk=employee.pk %}'"><i class="fa-regular fa-pen-to-square"></i></button>
+                <form method="post" action="{% url 'delete_employee' employee.pk %}" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este funcionário?');">
+                    {% csrf_token %}
+                    <button type="submit" class="delete"><i class="fa-regular fa-trash-can"></i></button>
+                </form>
+                <button class="document" onclick="window.location.href='{% url 'create_employee_document' employee.pk %}'">
+                    <i class="fa-regular fa-file"></i>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var styleCss = document.getElementById("style-css");
+        if (styleCss) {
+            styleCss.parentNode.removeChild(styleCss);
+        }
+    });
+</script>
+<script>
+    function redirectToPage() {
+    window.location.href = "{% url 'create_employee' %}";
+    }
+</script>
+
+{% endblock content %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Funcionário{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/updateEmployee.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="update-employee-container">
+    <div class="header-section">
+        <div class="img-container">
+            <img src="{% static 'app/img/funcionario.png' %}" alt="avatar_original do Funcionario" />
+        </div>
+        <h1>Editar Funcionário</h1>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-column">
+                <fieldset>
+                    <legend>Dados do Funcionário</legend>
+                    {{ user_form.as_p }}
+                    {{ employee_form.as_p }}
+                </fieldset>
+            </div>
+            <div class="form-column">
+                <fieldset>
+                    <legend>Dados do Perfil</legend>
+                    {{ profile_form.as_p }}
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'employee_detail' employee.pk %}'">Cancelar</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

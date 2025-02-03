@@ -1,0 +1,450 @@
+body {
+    font-family: 'Questrial';
+    font-style: normal;
+    font-weight: 400;
+    background-color: #f8ecd7;
+    color: #3a3636;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+}
+
+header {
+    background-color: #494271;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logoFamDigital {
+    width: 150px;
+    margin-left: 5px;
+}
+
+header ul {
+    gap: 35px;
+    margin-right: 20px;
+}
+
+.navbar-custom {
+    background-color: #494271 !important;
+}
+
+.container {
+    width: 100%;
+    margin: 30px auto;
+    padding: 20px;
+   
+    /* Ajustar conforme necessário */
+    flex: 1;
+    /* Expande para empurrar o footer */
+}
+
+.header-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.actions-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.container h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 80%;
+}
+
+.container h2 img {
+    width: 75px;
+    height: 90px;
+}
+
+.img-container {
+    background-color: #494271;
+    width: 115px;
+    height: 115px;
+    border-radius: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.campo {
+    background-color: #494271;
+    color: #f8ecd7;
+    width: 90%;
+    /* Ensure full width for all fields */
+    padding: 13px;
+    border: 1px solid #494271;
+    border-radius: 20px;
+}
+
+textarea.campo {
+    height: 100%;
+    /* Increase the default height for the textarea */
+    width: 89%;
+}
+
+select.campo {
+    height: auto;
+    /* Adjust height for select */
+}
+
+.campo::placeholder {
+    color: #9891bf;
+    padding-left: 6px;
+}
+
+.form-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* Three columns */
+    width: 100%;
+    /* Increase width */
+}
+
+.left-column,
+.middle-column,
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.right-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.middle-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+label {
+    margin-bottom: 0px;
+}
+
+.middle-column .label {
+    align-self: flex-start;
+    margin-left: 17px;
+}
+
+.right-column .upload-label {
+    align-self: center;
+}
+
+.right-column .label {
+    align-self: flex-start;
+    margin-left: 11px;
+}
+
+.form-group div {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input {
+    padding: 10px;
+    border-radius: 50px;
+    font-size: 16px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    width: 80%;
+}
+
+.actions button {
+    font-size: 16px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.actions .cancel {
+    padding: 10px 30px;
+    background-color: white;
+    color: #494271;
+}
+
+.actions .save {
+    padding: 10px 35px;
+    background-color: #494271;
+    color: white;
+}
+
+.actions .save:hover {
+    background-color: #2d2944;
+}
+
+.actions .cancel:hover {
+    background-color: #2d2944;
+    color: white;
+}
+
+.image-upload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.upload-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 115px;
+    height: 115px;
+    background-color: #494271;
+    border-radius: 50%;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.upload-label input[type="file"] {
+    display: none;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    background-color: #f8ecd7;
+    background-image: url('./img/avatar_original.png'); /* Default image */
+    /* Default image */
+    position: relative;
+    filter: brightness(0.7);
+    /* Darken the image */
+}
+
+.edit-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: white;
+}
+
+footer {
+    font-size: 13px;
+    background-color: #494271;
+    color: #f8ecd7;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+form {
+    flex-basis: 100%;
+    width: 90%;
+}
+
+@media (max-width: 768px) {
+
+    .form-group {
+        grid-template-columns: 1fr;
+        /* Exibir apenas uma coluna em telas pequenas */
+    }
+
+    .left-column,
+    .middle-column,
+    .right-column {
+        gap: 7px;
+    }
+
+    .campo {
+        margin-bottom: 10px;
+    }
+
+    .left-column {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+    }
+
+    .left-column label {
+        align-self: flex-start;
+        margin-left: 17px;
+    }
+
+    .left-column input {
+        align-self: left;
+    }
+
+    .right-column {
+        padding-top: 20px;
+    }
+
+    .middle-column {
+        padding-top: 10px;
+    }
+
+    .cabecalho {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container h2 {
+        font-size: 33px;
+        width: 100%;
+    }
+    
+    form {
+        width: 100%;
+    }
+
+    .actions-container {
+        margin: 20px 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .actions button {
+        width: 90%;
+        text-align: center;
+    }
+}
+
+.edit-icon {
+    display: none;
+}
+
+.upload-label:hover .edit-icon {
+    display: block;
+}
+
+/* Estilização do card de documentos */
+.document-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.document-card .card-header {
+    background-color: #494271;
+    color: #fff;
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.document-card .card-body {
+    padding: 15px;
+}
+
+.document-forms {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.document-form {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.add-document {
+    padding: 10px 20px;
+    background-color: #494271;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-document:hover {
+    background-color: #363060;
+}
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #f8ecd7;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #494271;
+    width: 80%;
+}
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}

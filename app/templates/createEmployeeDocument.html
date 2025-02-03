@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cadastrar Documento do Funcionário{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/createEmployeeDocument.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="document-container">
+    <h2>Cadastrar Documento para {{ user.get_full_name }}</h2>
+    <form method="POST" action="{% url 'create_employee_document' employee.pk %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <!-- Campo oculto para o funcionário caso necessário -->
+            {{ form.employee.as_hidden }}
+            <label for="{{ form.title.id_for_label }}">Título</label>
+            {{ form.title }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.file.id_for_label }}">Arquivo</label>
+            {{ form.file }}
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar Documento</button>
+            <button type="button" class="btn btn-secondary" onclick="window.history.back();">Cancelar</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
