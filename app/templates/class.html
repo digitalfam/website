@@ -22,7 +22,9 @@
         <div id="message-modal" class="modal">
             <div class="modal-content">
                 {% for message in messages %}
+                    {% if "redirect" in message.extra_tags %}
                 <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -58,7 +60,19 @@
                 {% else %}
                 <img src="{% static 'app/img/logoFamDigital.png' %}" alt="Foto da Classe" class="class-image"/>
                 {% endif %}
-                <button class="dropdown-btn" onclick="toggleDropdown({{ class.pk }})">Alunos</button>
+                <div class="button-group">
+                    <button class="dropdown-btn" onclick="toggleDropdown({{ class.pk }})">Alunos</button>
+                    <a href="{% url 'attendance' turma_id=class.pk %}">
+                        <button type="button" class="botao2">Frequência</button>
+                    </a>
+                    <a href="{% url 'history_attendance' turma_id=class.pk %}">
+                        <button type="button" class="botao3">Histórico de Frequência</button>
+                    </a>
+                    <form method="post" action="{% url 'delete_class' class.pk %}" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta turma?');">
+                        {% csrf_token %}
+                        <button type="submit" class="botao"><i class="fa-regular fa-trash-can"></i></button>
+                    </form>
+                </div>
             </div>
             <div id="dropdown-{{ class.pk }}" class="dropdown-content" style="display: none;">
                 <ul>
@@ -68,6 +82,7 @@
                 </ul>
             </div>
         </div>
+        
         {% endfor %}
     </div>
 </div>

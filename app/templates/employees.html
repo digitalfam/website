@@ -27,24 +27,28 @@
 
     </div>
     {% if messages %}
-    <div id="message-modal" class="modal">
-        <div class="modal-content">
-            {% for message in messages %}
-                <div class="message {{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        </div>
+  <div id="message-modal" class="modal">
+    <div class="modal-content">
+      {% for message in messages %}
+        {% if "redirect" in message.extra_tags %}
+          <div class="message {{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var messageModal = document.getElementById("message-modal");
-            if (messageModal) {
-                setTimeout(function() {
-                    messageModal.style.display = "none";
-                }, 2000);
-            }
-        });
-    </script>
-    {% endif %}
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var messageModal = document.getElementById("message-modal");
+      if (messageModal) {
+        setTimeout(function() {
+          messageModal.style.display = "none";
+        }, 2000);
+      }
+    });
+  </script>
+{% endif %}
     <div class="search-container">
         <form method="get" action="{% url 'employee' %}">
             <input type="text" name="search" placeholder="Pesquisar funcionário" value="{{ search }}">
@@ -68,7 +72,7 @@
                     <img src="{% static 'app/img/avatar_original.png' %}" alt="Foto do Funcionário">
                 {% endif %}
             </div>
-            <div class="employee-name">{{ employee.user.username }}</div>
+            <div class="employee-name">{{ employee.user.get_full_name }}</div>
             <div class="employee-position">{{ employee.occupation }}</div>
             <div class="employee-actions">
                 <button class="view" onclick="window.location.href='{% url 'employee_detail' employee.pk %}'"><i class="fa-regular fa-eye"></i></button>

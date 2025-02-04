@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Histórico de Frequências - {{ turma.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/attendance_history.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container">
+    <div class="class-image">
+        <img src="{{ turma.image.url }}" alt="Imagem da turma {{ turma.name }}" class="img-fluid">
+    </div>
+    <h2>Histórico de Frequências - Turma: {{ turma.name }}</h2>
+    {% if attendance_by_date %}
+        <div class="calendar">
+            {% for date, attendances in attendance_by_date.items %}
+                <div class="calendar-day">
+                    <div class="day-header">{{ date }}</div>
+                    <div class="attendance-list">
+                        {% for attendance in attendances %}
+                            <div class="attendance-item">
+                                <img src="{{ attendance.student.photo.url }}" alt="Foto de {{ attendance.student.name }}" width="30" height="30">
+                                <span class="student-name">{{ attendance.student.name }} {{ attendance.student.last_name }}</span>
+                                <span class="status">
+                                    {% if attendance.present %}
+                                        <i class="fas fa-check-circle" style="color: green;"></i>
+                                    {% else %}
+                                        <i class="fas fa-times-circle" style="color: red;"></i>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nenhum registro de frequência encontrado.</p>
+    {% endif %}
+</div>
+{% endblock %}

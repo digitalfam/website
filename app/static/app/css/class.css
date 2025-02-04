@@ -59,14 +59,6 @@ header ul {
     background-color: #494271 !important;
 }
 
-.container {
-    width: 100%;
-    margin: 30px auto;
-    padding: 20px;
-    flex: 1;
-    margin: 12%; 
-    background-color: transparent; /* Remove background color */
-}
 
 .header-container {
     display: flex;
@@ -243,7 +235,7 @@ label {
     position: relative;
 }
 .class-image {
-    width: 50%;
+    width: 100%;
     height: auto;
     border-radius: 10px;
     object-fit: cover;
@@ -456,7 +448,8 @@ form {
 }
 
 .dropdown-btn:hover {
-    background-color: #2d2944;
+    background-color: #1e3a8a;
+    border: 1px solid #1e3a8a;
 }
 
 .dropdown-content {
@@ -476,4 +469,56 @@ form {
 .dropdown-content li {
     padding: 5px 0;
     color: #3a3636;
+}
+
+
+
+.botao {
+    background-color: #494271;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.botao:hover {
+    background-color: #ff0000;
+    border: 1px solid #ff0000;
+    color: #000000;
+}
+
+.botao2 {
+    background-color: #494271;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 10px;
+}
+
+.botao2:hover {
+    background-color: #FFC107;
+    border: 1px solid #9d7600; 
+    color: #000000;
+}
+
+.botao3 {
+    background-color: #494271;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+   
+}
+
+.botao3:hover {
+    background-color: #28a745;
+    border: 1px solid #1e7e34; 
+   
 }

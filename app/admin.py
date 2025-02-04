@@ -103,6 +103,20 @@ class AttendanceStudentsAdmin(admin.ModelAdmin):
         queryset.update(present=False)
     mark_as_absent.short_description = "Marcar selecionados como Ausentes"
 
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
+        turma_id = request.GET.get('turma__id__exact')
+        if turma_id:
+            extra_context['title'] = f'Attendance for Turma {turma_id}'
+        return super().changelist_view(request, extra_context=extra_context)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        turma_id = request.GET.get('turma__id__exact')
+        if turma_id:
+            qs = qs.filter(turma_id=turma_id)
+        return qs
+
 @admin.register(Parents)
 class ParentsAdmin(admin.ModelAdmin):
     list_display = ('user', 'get_sons', 'created_at')

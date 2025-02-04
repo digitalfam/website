@@ -25,7 +25,9 @@ urlpatterns = [
     path('update_student/<int:pk>/', UpdateStudentView.as_view(), name='update_student'),
     path('class/', ClassView.as_view(), name='class'),
     path('create_class/', CreateClassView.as_view(), name='create_class'),
-    
+    path('delete_class/<int:pk>/', DeleteClassView.as_view(), name='delete_class'),
+    path('attendance/<int:turma_id>/', TakeAttendanceView.as_view(), name='attendance'),
+    path('history_attendance/<int:turma_id>/', HistoryAttendanceView.as_view(), name='history_attendance'),
     path('password_reset/', auth_views.PasswordResetView.as_view(
         template_name='password_reset.html',
         html_email_template_name='password_reset_email.html',

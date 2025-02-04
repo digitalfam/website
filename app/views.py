@@ -7,7 +7,8 @@ from .forms import *
 from .models import *
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
- 
+
+from datetime import date
 
 
 
@@ -88,12 +89,12 @@ class CreateEmployeeView(View):
         if form.is_valid():
             try:
                 form.save()
-                messages.success(request, 'Funcionário criado com sucesso!')
+                messages.success(request, 'Funcionário criado com sucesso!', extra_tags="redirect")
                 return redirect('employee')  # Substitua pelo nome da sua URL de listagem
             except IntegrityError as e:
                 messages.error(request, f'Erro ao criar funcionário: {e}')
         else:
-            messages.error(request, 'Erro ao criar funcionário. Verifique os dados inseridos.')
+            messages.error(request, 'Erro ao criar funcionário. Verifique os dados inseridos.', extra_tags="redirect")
         employees = Employee.objects.all()
         occupations = Occupation.objects.all()
         return render(request, 'createEmployee.html', {'form': form, 'employees': employees, 'occupations': occupations})
@@ -105,7 +106,7 @@ class DeleteEmployeeView(View):
     def post(self, request, pk):
         employee = Employee.objects.get(id=pk)
         employee.delete()
-        messages.success(request, 'Funcionário deletado com sucesso!')
+        messages.success(request, 'Funcionário deletado com sucesso!', extra_tags="redirect")
         return redirect('employee')
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -137,7 +138,7 @@ class UpdateEmployeeView(View):
             employee_form.save()
             profile_form.save()
             user_form.save()
-            messages.success(request, "Funcionário atualizado com sucesso!")
+            messages.success(request, "Funcionário atualizado com sucesso!", extra_tags="redirect")
             return redirect('employee')
         context = {
             'employee': employee,
@@ -212,9 +213,9 @@ class CreateStudentView(View):
         student_form = StudentForm(request.POST, request.FILES)
         if student_form.is_valid():
             student_form.save()
-            messages.success(request, 'Aluno criado com sucesso!')
+            messages.success(request, 'Aluno criado com sucesso!', extra_tags="redirect")
             return redirect('student')  # Redirecione para a lista de alunos após o cadastro
-        messages.error(request, 'Erro ao criar aluno. Verifique os dados inseridos.')
+        messages.error(request, 'Erro ao criar aluno. Verifique os dados inseridos.', extra_tags="redirect")
         print(student_form.errors)
         return render(request, 'createStudent.html', {
             'student_form': student_form,
@@ -255,7 +256,7 @@ class DeleteStudentView(View):
     def post(self, request, pk):
         student = Students.objects.get(id=pk)
         student.delete()
-        messages.success(request, 'Aluno deletado com sucesso!')
+        messages.success(request, 'Aluno deletado com sucesso!', extra_tags="redirect")
         return redirect('student')
     
 @method_decorator(staff_member_required, name='dispatch')
@@ -270,9 +271,9 @@ class UpdateStudentView(View):
         form = StudentUpdateForm(request.POST, request.FILES, instance=student)
         if form.is_valid():
             form.save()
-            messages.success(request, "Aluno atualizado com sucesso!")
+            messages.success(request, "Aluno atualizado com sucesso!", extra_tags="redirect")
             return redirect('student')  # Redirecione para a lista de alunos ou detalhe do aluno
-        messages.error(request, "Erro ao atualizar aluno. Verifique os dados informados.")
+        messages.error(request, "Erro ao atualizar aluno. Verifique os dados informados.", extra_tags="redirect")
         return render(request, 'updateStudent.html', {'student_form': form, 'student': student})
     
 @method_decorator(staff_member_required, name='dispatch')
@@ -292,8 +293,66 @@ class CreateClassView(View):
         form = ClassForm(request.POST, request.FILES)  # Certifique-se de passar request.FILES aqui
         if form.is_valid():
             form.save()
-            messages.success(request, 'Turma criada com sucesso!')
+            messages.success(request, 'Turma criada com sucesso!', extra_tags="redirect")
             return redirect('class')  # Redirecione para a lista de turmas ou outra página desejada
-        messages.error(request, 'Erro ao criar turma. Verifique os dados inseridos.')
+        messages.error(request, 'Erro ao criar turma. Verifique os dados inseridos.', extra_tags="redirect")
         students = Students.objects.all()
         return render(request, 'createClass.html', {'form': form, 'students': students})
+
+@method_decorator(staff_member_required, name='dispatch')
+class DeleteClassView(View):
+    def get(self, request, pk):
+        return self.post(request, pk)
+
+    def post(self, request, pk):
+        class_obj = Class.objects.get(id=pk)
+        class_obj.delete()
+        messages.success(request, 'Turma deletada com sucesso!', extra_tags="redirect")
+        return redirect('class')
+    
+
+class HistoryAttendanceView(View):
+    def get(self, request, turma_id):
+        turma = get_object_or_404(Class, pk=turma_id)
+        attendances = AttendanceStudents.objects.filter(turma=turma).order_by('date')
+        attendance_by_date = {}
+        for attendance in attendances:
+            if attendance.date not in attendance_by_date:
+                attendance_by_date[attendance.date] = []
+            attendance_by_date[attendance.date].append(attendance)
+        return render(request, 'attendance_history.html', {'turma': turma, 'attendance_by_date': attendance_by_date})
+    
+class TakeAttendanceView(View):
+    def get(self, request, turma_id):
+        turma = get_object_or_404(Class, pk=turma_id)
+        today = timezone.now().date()
+        if AttendanceStudents.objects.filter(turma=turma, date=today).exists():
+            messages.error(request, "A frequência para hoje já foi registrada.", extra_tags="redirect")
+            return redirect('history_attendance', turma_id=turma_id)
+        for student in turma.students.all():
+            AttendanceStudents.objects.create(
+                turma=turma,
+                student=student,
+                date=today,
+                present=False
+            )
+        attendances = AttendanceStudents.objects.filter(turma=turma, date=today)
+        attendance_dict = {record.student.pk: record for record in attendances}
+        return render(request, 'attendance.html', {'turma': turma, 'students': turma.students.all(), 'attendance': attendance_dict})
+
+    def post(self, request, turma_id):
+        turma = get_object_or_404(Class, pk=turma_id)
+        today = timezone.now().date()
+        if AttendanceStudents.objects.filter(turma=turma, date=today).exists():
+            messages.error(request, "A frequência para hoje já foi registrada.", extra_tags="redirect")
+            return redirect('history_attendance', turma_id=turma_id)
+        present_ids = request.POST.getlist('present')
+        for student in turma.students.all():
+            AttendanceStudents.objects.update_or_create(
+                turma=turma,
+                student=student,
+                date=today,
+                defaults={'present': str(student.pk) in present_ids}
+            )
+        messages.success(request, "Frequência registrada com sucesso!", extra_tags="redirect")
+        return redirect('history_attendance', turma_id=turma_id)
