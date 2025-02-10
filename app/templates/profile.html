@@ -8,50 +8,59 @@
 {% endblock extra_css %}
 
 {% block content %}
-<div class="profile-container">
-  
-    <div class="profile-header">
-         <div class="profile-picture">
-              {% if employee.photo %}
-                  <img src="{{ employee.photo.url }}" alt="Foto de Perfil">
-              {% elif parents.photo %}
-                  <img src="{{ parents.photo.url }}" alt="Foto de Perfil">
-              {% else %}
-                  <img src="{% static 'app/img/avatar_original.png' %}" alt="Foto de Perfil">
-              {% endif %}
-         </div>
-         <div class="user-info">
-              <h1>{{ user.get_full_name }}</h1>
-              <p class="username">@{{ user.username }}</p>
-              <p class="role">{{ profile.role }}</p>
-         </div>
-       
-    </div>
-    <div class="profile-details">
-         <div class="detail-item">
-              <span class="label">Email:</span>
-              <span class="value">{{ user.email }}</span>
-         </div>
-         <div class="detail-item">
-              <span class="label">CPF:</span>
-              <span class="value">{{ profile.cpf|addslashes|slice:":3" }}.{{ profile.cpf|addslashes|slice:"3:6" }}.{{ profile.cpf|addslashes|slice:"6:9" }}-{{ profile.cpf|addslashes|slice:"9:11" }}</span>
-         </div>
-         <div class="detail-item">
-              <span class="label">Telefone:</span>
-              <span class="value"> ({{ profile.phone|slice:":2" }}) {{ profile.phone|slice:"2:7" }}-{{ profile.phone|slice:"7:11" }}</span>
-         </div>
-         <div class="detail-item">
-              <span class="label">Endereço:</span>
-              <span class="value">{{ profile.address }}, Nº {{ profile.number }}, {{ profile.neighborhood }}</span>
-         </div>
-         <div class="detail-item">
-              <span class="label">Cidade:</span>
-              <span class="value">{{ profile.city }}</span>
-         </div>
-         <div class="detail-item">
-              <span class="label">Telefone de Emergência:</span>
-              <span class="value"> ({{ profile.emergency_phone|slice:":2" }}) {{ profile.emergency_phone|slice:"2:7" }}-{{ profile.emergency_phone|slice:"7:11" }}</span>
-         </div>
-    </div>
+<div class="container">
+     <div class="header-container">
+          <h2>
+               <div class="img-container">
+                    <img src="{% static 'app/img/perfil.png' %}" alt="perfil" />
+               </div>
+               Meu Perfil
+          </h2>
+     </div>
+     <div class="profile-container">
+          <div class="profile-header">
+               <div class="profile-picture">
+                    {% if employee.photo %}
+                    <img src="{{ employee.photo.url }}" alt="Foto de Perfil">
+                    {% elif parents.photo %}
+                    <img src="{{ parents.photo.url }}" alt="Foto de Perfil">
+                    {% else %}
+                    <img src="{% static 'app/img/avatar_original.png' %}" alt="Foto de Perfil">
+                    {% endif %}
+               </div>
+               <div class="user-info">
+                    <h1>{{ user.get_full_name }}</h1>
+                    <p class="username">@{{ user.username }}</p>
+                    <p class="role">{{ profile.role }}</p>
+               </div>
+
+          </div>
+          <div class="profile-details">
+               <div class="detail-item">
+                    <span class="label">Email:</span>
+                    <span class="value">{{ user.email }}</span>
+               </div>
+               <div class="detail-item">
+                    <span class="label">CPF:</span>
+                    <span class="value">{{ profile.cpf|addslashes|slice:":3" }}.{{ profile.cpf|addslashes|slice:"3:6"}}.{{profile.cpf|addslashes|slice:"6:9" }}-{{ profile.cpf|addslashes|slice:"9:11" }}</span>
+               </div>
+               <div class="detail-item">
+                    <span class="label">Telefone:</span>
+                    <span class="value"> ({{ profile.phone|slice:":2" }}) {{ profile.phone|slice:"2:7" }}-{{profile.phone|slice:"7:11" }}</span>
+               </div>
+               <div class="detail-item">
+                    <span class="label">Endereço:</span>
+                    <span class="value">{{ profile.address }}, Nº {{ profile.number }}, {{ profile.neighborhood}}</span>
+               </div>
+               <div class="detail-item">
+                    <span class="label">Cidade:</span>
+                    <span class="value">{{ profile.city }}</span>
+               </div>
+               <div class="detail-item">
+                    <span class="label">Telefone de Emergência:</span>
+                    <span class="value"> ({{ profile.emergency_phone|slice:":2" }}) {{profile.emergency_phone|slice:"2:7"}}-{{ profile.emergency_phone|slice:"7:11" }}</span>
+               </div>
+          </div>
+     </div>
 </div>
 {% endblock content %}

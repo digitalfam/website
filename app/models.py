@@ -12,18 +12,19 @@ class Profile(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Usuário')
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='OUTRO', verbose_name='Função')
-    cpf = models.CharField(max_length=14, unique=True, blank=True, null=True, verbose_name='CPF')
-    phone = models.CharField(max_length=15, blank=True, null=True, verbose_name='Telefone')
-    address = models.CharField(max_length=200, verbose_name='Endereço')
-    neighborhood = models.CharField(max_length=100, verbose_name='Bairro')
-    number = models.CharField(max_length=10, verbose_name='Número')
+    cpf = models.CharField(max_length=14, unique=True, blank=True, null=True, default='000.000.000-00', verbose_name='CPF')
+    phone = models.CharField(max_length=15, blank=True, null=True, default='00 0 0000-0000', verbose_name='Telefone')
+    address = models.CharField(max_length=200, default='Default Address', verbose_name='Endereço')
+    neighborhood = models.CharField(max_length=100, default='Centro', verbose_name='Bairro')
+    number = models.CharField(max_length=10, default='000', verbose_name='Número')
     urban_or_rural = models.CharField(
         max_length=10,
         choices=[('Urbano', 'Urbano'), ('Rural', 'Rural')],
+        default='Urbano',
         verbose_name='Zona'
     )
     city = models.CharField(max_length=100, default='Muzambinho-MG', verbose_name='Cidade')
-    emergency_phone = models.CharField(max_length=15, verbose_name='Telefone de Emergência')
+    emergency_phone = models.CharField(max_length=15, default='00 0 0000-0000', verbose_name='Telefone de Emergência')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
     def __str__(self):
@@ -35,7 +36,7 @@ class Profile(models.Model):
         ordering = ['user__username']
 
 class Occupation(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Nome da Ocupação')
+    name = models.CharField(max_length=100, default='Ocupação Padrão', verbose_name='Nome da Ocupação')
 
     def __str__(self):
         return self.name
@@ -48,9 +49,9 @@ class Occupation(models.Model):
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Usuário')
     occupation = models.ForeignKey(Occupation, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Ocupação')
-    salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, verbose_name='Salário')
-    admission = models.DateField(blank=True, null=True, verbose_name='Data de Admissão')
-    resignation = models.DateField(blank=True, null=True, verbose_name='Data de Demissão')
+    salary = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0.00, verbose_name='Salário')
+    admission = models.DateField(blank=True, null=True, default=timezone.now, verbose_name='Data de Admissão')
+    resignation = models.DateField(blank=True, null=True, default=timezone.now, verbose_name='Data de Demissão')
     photo = models.ImageField(upload_to='fotos/funcionarios/', blank=True, null=True, verbose_name='Foto')
 
     def __str__(self):
@@ -63,7 +64,7 @@ class Employee(models.Model):
 
 class DocumentEmployee(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name='Funcionário')
-    title = models.CharField(max_length=100, verbose_name='Título')
+    title = models.CharField(max_length=100, default='Título Padrão', verbose_name='Título')
     file = models.FileField(upload_to='docs/funcionarios/', verbose_name='Arquivo')
     uploaded_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Envio')
 
@@ -76,18 +77,18 @@ class DocumentEmployee(models.Model):
         ordering = ['-uploaded_at']
 
 class Students(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Nome')
-    last_name = models.CharField(max_length=100, verbose_name='Sobrenome')
-    birth_date = models.DateField(verbose_name='Data de Nascimento')
-    cpf = models.CharField(max_length=14, verbose_name='CPF', unique=True)
-    mother_name = models.CharField(max_length=100, verbose_name='Nome da Mãe')
-    father_name = models.CharField(max_length=100, verbose_name='Nome do Pai')
-    address = models.CharField(max_length=200, verbose_name='Endereço')
-    neighborhood = models.CharField(max_length=100, verbose_name='Bairro')
-    number = models.CharField(max_length=10, verbose_name='Número')
-    urban_or_rural = models.CharField(max_length=10, choices=[('Urbano', 'Urbano'), ('Rural', 'Rural')], verbose_name='Zona')
+    name = models.CharField(max_length=100, default='Nome Padrão', verbose_name='Nome')
+    last_name = models.CharField(max_length=100, default='Sobrenome Padrão', verbose_name='Sobrenome')
+    birth_date = models.DateField(default=timezone.now, verbose_name='Data de Nascimento')
+    cpf = models.CharField(max_length=14, default='000.000.000-00', verbose_name='CPF', unique=True)
+    mother_name = models.CharField(max_length=100, default='Nome da Mãe Padrão', verbose_name='Nome da Mãe')
+    father_name = models.CharField(max_length=100, default='Nome do Pai Padrão', verbose_name='Nome do Pai')
+    address = models.CharField(max_length=200, default='Endereço Padrão', verbose_name='Endereço')
+    neighborhood = models.CharField(max_length=100, default='Centro', verbose_name='Bairro')
+    number = models.CharField(max_length=10, default='000', verbose_name='Número')
+    urban_or_rural = models.CharField(max_length=10, choices=[('Urbano', 'Urbano'), ('Rural', 'Rural')], default='Urbano', verbose_name='Zona')
     city = models.CharField(max_length=100, default='Muzambinho-MG', verbose_name='Cidade')
-    emergency_phone = models.CharField(max_length=15, verbose_name='Telefone de Emergência')
+    emergency_phone = models.CharField(max_length=15, default='00 0 0000-0000', verbose_name='Telefone de Emergência')
     photo = models.ImageField(upload_to='fotos/estudantes/', verbose_name='Foto')
     enrollment_number = models.CharField(max_length=20, unique=True, verbose_name='Número de Matrícula')
     observations = models.TextField(blank=True, null=True, verbose_name='Observações')
@@ -103,7 +104,7 @@ class Students(models.Model):
 
 class DocumentStudent(models.Model):
     student = models.ForeignKey(Students, on_delete=models.CASCADE, verbose_name='Aluno')
-    title = models.CharField(max_length=100, verbose_name='Título')
+    title = models.CharField(max_length=100, default='Título Padrão', verbose_name='Título')
     file = models.FileField(upload_to='docs/estudantes/', verbose_name='Arquivo')
     uploaded_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Envio')
 
@@ -116,7 +117,7 @@ class DocumentStudent(models.Model):
         ordering = ['-uploaded_at']
 
 class Class(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Nome')
+    name = models.CharField(max_length=100, default='Nome da Turma Padrão', verbose_name='Nome')
     students = models.ManyToManyField(Students, verbose_name='Estudantes', related_name='classes')
     teacher = models.ForeignKey(Employee, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Professor')
     shift = models.CharField(max_length=20, choices=[('Matutino', 'Matutino'), ('Vespertino', 'Vespertino')], verbose_name='Turno')
@@ -136,7 +137,7 @@ class AttendanceStudents(models.Model):
     student = models.ForeignKey(Students, on_delete=models.CASCADE, related_name='attendances', verbose_name='Aluno')
     date = models.DateField(verbose_name='Data')
     present = models.BooleanField(default=False, verbose_name='Presente')
-    notes = models.TextField(blank=True, null=True, verbose_name='Observações')
+    notes = models.TextField(blank=True, null=True, default='Sem observações', verbose_name='Observações')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Criação')
 
     def __str__(self):
@@ -164,7 +165,7 @@ class Parents(Profile):
 
 class DocumentParent(models.Model):
     parent = models.ForeignKey(Parents, on_delete=models.CASCADE, verbose_name='Pai/Mãe')
-    title = models.CharField(max_length=100, verbose_name='Título')
+    title = models.CharField(max_length=100, default='Título Padrão', verbose_name='Título')
     file = models.FileField(upload_to='docs/pais/', verbose_name='Arquivo')
     uploaded_at = models.DateTimeField(default=timezone.now, verbose_name='Data de Envio')
 
@@ -178,9 +179,9 @@ class DocumentParent(models.Model):
         
 class AuditLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Usuário')
-    model_name = models.CharField(max_length=100, verbose_name='Modelo')
+    model_name = models.CharField(max_length=100, default='Modelo Padrão', verbose_name='Modelo')
     object_id = models.PositiveIntegerField(verbose_name='ID do Objeto')
-    action = models.CharField(max_length=50, verbose_name='Ação')
+    action = models.CharField(max_length=50, default='Ação Padrão', verbose_name='Ação')
     timestamp = models.DateTimeField(default=timezone.now, verbose_name='Data/Hora')
 
     def __str__(self):

@@ -1,0 +1,233 @@
+/* Header */
+header {
+    background-color: #494271;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    /* Ensure header is on top */
+}
+
+/* Título da página */
+h2 {
+    color: #494271;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Data da frequência */
+h3 {
+    color: #fff;
+    margin-top: 20px;
+}
+
+/* Botão secundário */
+.btn2 {
+    color: white;
+    border: 1px solid #494271;
+}
+
+.btn2:hover {
+    color: white;
+    border: 1px solid #6b5b95;
+}
+
+.btn2:active {
+    color: white;
+    border: 1px solid #362c5a;
+}
+
+/* Cartões de frequência */
+.card {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: #494271;
+    color: #f8ecd7;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.card-header h3 {
+    margin: 0;
+}
+
+.card-header:hover {
+    background-color: #362c5a;
+}
+
+.card-body {
+    background-color: #fff;
+    padding: 15px;
+}
+
+/* Tabela de Frequência */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.table th {
+    background-color: #494271;
+    color: #f8ecd7;
+    font-weight: normal;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f0e9e0;
+}
+
+/* Estilos para imagem da classe/turma */
+.class-image img {
+    max-width: 50%; /* Ajusta a largura para 50% */
+    height: auto; /* Mantém a proporção da imagem */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+    object-fit: contain; /* Garante que a imagem se ajuste sem ser cortada */
+    border: 2px solid transparent; /* Borda inicial transparente */
+}
+
+.class-image img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border: 2px solid #494271; /* Borda roxa no hover */
+}
+
+/* ================================ */
+/* Estilos para exibir em formato de Calendário */
+
+/* Container principal para o calendário */
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f8ecd7;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Calendário: grid com 7 colunas (pode ser ajustado) */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+/* Cada dia do calendário */
+.calendar-day {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabeçalho com a data no calendário */
+.day-header {
+    background-color: #494271;
+    color: #f8ecd7;
+    padding: 5px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Lista de registros de frequência no dia */
+.attendance-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Item individual de frequência */
+.attendance-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.attendance-item:last-child {
+    border-bottom: none;
+}
+
+.attendance-item img {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.student-name {
+    flex: 1;
+}
+
+.status {
+    margin-left: auto;
+}
+
+/* Responsividade para o calendário */
+@media (max-width: 768px) {
+    .calendar {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .calendar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ================================ */
+/* Responsividade Geral (cards/tabelas) */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px 5px;
+    }
+}
+
+
+.attendance-list {
+    flex: 1;
+    max-height: 150px; /* Altura máxima da lista */
+    overflow-y: auto;  /* Adiciona scroll vertical quando necessário */
+    padding-right: 5px; /* Espaço para a barra de rolagem */
+}

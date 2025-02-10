@@ -1,0 +1,183 @@
+/* Geral */
+body {
+    font-family: 'Questrial', sans-serif;
+    background-color: #f8ecd7;
+    color: #3a3636;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 200px;
+    margin-bottom: 15%; /* Ajuste para o header fixo */
+}
+
+header {
+    background-color: #494271;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1; /* Certifique-se de que o header está no topo */
+}
+
+
+
+.container-table {
+    width: 80%;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+h2 {
+    color: #494271;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Tabela de Frequência */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    
+}
+
+table th,
+table td {
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+table th {
+    background-color: #494271;
+    color: #f8ecd7;
+    font-weight: normal;
+}
+
+table tr:nth-child(even) {
+    background-color: #f0e9e0;
+}
+
+/* Ações */
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.actions .save {
+    background-color: #494271;
+    color: #f8ecd7;
+}
+
+.actions .save:hover {
+    background-color: #2d2944;
+}
+
+.actions .cancel {
+    background-color: #ddd;
+    color: #3a3636;
+}
+
+/* Estilo para checkbox */
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #494271;
+    border: 2px solid #494271;
+}
+button[type="submit"] {
+    background-color: #494271;
+    color: #f8ecd7;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button.cancel {
+    background-color: #ddd;
+    color: #3a3636;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+}
+
+button.cancel:hover {
+    background-color: #ccc;
+}
+
+button[type="submit"]:hover {
+    background-color: #2d2944;
+}
+
+.actions .cancel:hover {
+    background-color: #ccc;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    table th,
+    table td {
+        padding: 8px 5px;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .actions button {
+        width: 100%;
+        text-align: center;
+    }
+}
+.scrollable-table {
+    max-height: 400px;
+    overflow-y: auto;
+    display: block;
+}
+.scrollable-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.scrollable-table th, .scrollable-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}

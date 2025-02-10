@@ -12,60 +12,71 @@
         <div class="header-container">
             <h2>
                 <div class="img-container">
-                    <img src="{% static 'app/img/aluno.png' %}" alt="avatar_original da Turma" />
+                    <img src="{% static 'app/img/turma.png' %}" alt="avatar_original da Turma" />
                 </div>
                 Criar Turma
             </h2>
+        </div>
+        <div class="actions-container">
+            <div class="actions">
+                <button type="button" class="cancel"
+                    onclick="window.location.href='{% url 'class' %}'">Cancelar</button>
+                <button type="submit" class="save">Salvar</button>
+            </div>
         </div>
     </div>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
-            <div class="left-column campo">
-                <label for="id_name">Nome da Turma:</label>
-                {{ form.name }}
+            <div class="left-column">
+                <label class='label' for="id_name">Nome da Turma:</label>
+                <div class="campo">
+                    {{ form.name }}
+                </div>
+
+                <label class='label' for="id_shift">Turno:</label>
+                <div class="campo">
+                    {{ form.shift }}
+                </div>
+
+                <label class='label' for="id_teacher">Professor:</label>
+                <div class="campo">
+                    {{ form.teacher }}
+                </div>
             </div>
-            <div class="right-column campo">
-                <label for="id_teacher">Professor:</label>
-                {{ form.teacher }}
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="left-column campo">
-                <label for="id_shift">Turno:</label>
-                {{ form.shift }}
-            </div>
-            <div class="left-column campo">
-                <label for="id_image">Imagem:</label>
-                {{ form.image }}
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="right-column" id="students">
-                <label for="id_students" style="color: #f8ecd7;">Estudantes:</label>
-                {{ form.students }}
+            <div class="right-column">
+                <label class="upload-label" for="id_image">
+                    <div id="photo" name="photo" accept="image/*" onchange="previewImage(event)">
+                        {{ form.image }}
+                    </div>
+                    <div class="image-preview" id="image-preview"></div>
+                    <div class="edit-icon"><i class="fa-regular fa-pen-to-square"></i></div>
+                </label>
+
+                <label class='label' for="id_students">Estudantes:</label>
+                <div class="campo" id="students">
+                    {{ form.students }}
+                </div>
                 {% for error in form.students.errors %}
-                <div class="error" style="color: whitesmoke; background-color: #ff0000; padding: 5px; border-radius: 5px; animation: fadeOut 2s forwards;" id="error-{{ forloop.counter }}">
+                <div class="error"
+                    style="color: whitesmoke; background-color: #ff0000; padding: 5px; border-radius: 5px; animation: fadeOut 2s forwards;"
+                    id="error-{{ forloop.counter }}">
                     {{ error }}
                 </div>
                 <script>
-                    setTimeout(function() {
+                    setTimeout(function () {
                         document.getElementById('error-{{ forloop.counter }}').style.display = 'none';
                     }, 2000);
                 </script>
                 {% endfor %}
             </div>
-            <div class="actions">
-                <button type="submit" class="save">Salvar</button>
-                <button type="button" class="cancel" onclick="window.location.href='{% url 'class' %}'">Cancelar</button>
-            </div>
         </div>
-       
+
     </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const studentsSelect = document.getElementById('id_students');
         const choices = new Choices(studentsSelect, {
             removeItemButton: true,
@@ -77,5 +88,22 @@
             placeholderValue: 'Selecione os estudantes...', // Placeholder for the select input
         });
     });
+
+    function previewImage(event) {
+        var file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) { // Verifica se é um arquivo de imagem
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('image-preview');
+                output.style.backgroundImage = `url(${reader.result})`;
+                output.style.backgroundSize = 'cover';
+                output.style.backgroundPosition = 'center';
+                output.style.border = '2px solid #ccc'; // Opcional: Adiciona borda para melhor visualização
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert("Por favor, selecione um arquivo de imagem válido.");
+        }
+    }
 </script>
 {% endblock %}
