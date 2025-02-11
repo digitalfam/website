@@ -21,11 +21,11 @@
             <div class="actions">
                 <button type="button" class="cancel"
                     onclick="window.location.href='{% url 'class' %}'">Cancelar</button>
-                <button type="submit" class="save">Salvar</button>
+                <button type="submit" class="save" form="create-class-form">Salvar</button>
             </div>
         </div>
     </div>
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="create-class-form">
         {% csrf_token %}
         <div class="form-group">
             <div class="left-column">

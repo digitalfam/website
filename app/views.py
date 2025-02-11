@@ -328,14 +328,6 @@ class TakeAttendanceView(View):
         today = timezone.now().date()
         if AttendanceStudents.objects.filter(turma=turma, date=today).exists():
             messages.error(request, "A frequência para hoje já foi registrada.", extra_tags="redirect")
-            return redirect('history_attendance', turma_id=turma_id)
-        for student in turma.students.all():
-            AttendanceStudents.objects.create(
-                turma=turma,
-                student=student,
-                date=today,
-                present=False
-            )
         attendances = AttendanceStudents.objects.filter(turma=turma, date=today)
         attendance_dict = {record.student.pk: record for record in attendances}
         return render(request, 'attendance.html', {'turma': turma, 'students': turma.students.all(), 'attendance': attendance_dict})

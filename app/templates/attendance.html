@@ -32,9 +32,9 @@
                         <td>{{ student.name }} {{ student.last_name }}</td>
                         <td>
                             <input type="checkbox" name="present" value="{{ student.pk }}"
-                                {% if attendance.student.pk|default_if_none:"" == student.pk or attendance|get_item:student.pk and attendance|get_item:student.pk.present %}checked{% endif %}>
+                                {% if attendance|get_item:student.pk and attendance|get_item:student.pk.present %}checked{% endif %}>
                         </td>
-                    </tr>
+                                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
