@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 #==>
 
-SECRET_KEY = 'SILASQUEIROZaimeuDEUSeuCOMMITEIsegred0s!!!"
+SECRET_KEY = "SILASQUEIROZaimeuDEUSeuCOMMITEIsegred0s!!!"
 
 DEBUG = True
 
