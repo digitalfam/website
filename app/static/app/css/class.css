@@ -9,8 +9,7 @@ body, html {
     align-items: stretch;
     justify-content: flex-start;
     min-height: 100vh;
-   
-    /* ajuste conforme a altura do seu header */
+    /* overflow-y: auto; Remover ou comentar esta linha */
 }
 
 header {
@@ -19,7 +18,6 @@ header {
     width: 100%;
     padding: 10px;
     position: fixed;
-    top: 0;
     left: 0;
     display: flex;
     justify-content: space-between;
@@ -78,6 +76,7 @@ header ul {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-top: 140px;
 }
 
 .container h2 {
@@ -401,6 +400,7 @@ form {
     gap: 20px;
     justify-content: center;
     padding: 20px;
+    padding-bottom: 70px;
 }
 
 .class-card {
@@ -470,8 +470,6 @@ form {
     padding: 5px 0;
     color: #3a3636;
 }
-
-
 
 .botao {
     background-color: #494271;
