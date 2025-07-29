@@ -9,14 +9,14 @@
     <h2>Escolha uma opção:</h2>
     <div class="opcoes" style="margin-top: -10px;">
         {% if user.is_superuser %}
-        <a class="navbar-brand" href="{% url 'employee' %}">
+        <a class="navbar-brand" href="{% url 'employees' %}">
             <div class="opcao">
                 <img src="{% static 'app/img/funcionario.png' %}" alt="Funcionários">
                 <p>Funcionários</p>
             </div>
         </a>
         {% endif %}
-        <a class="navbar-brand" href="{% url 'student' %}">
+        <a class="navbar-brand" href="{% url 'students' %}">
             <div class="opcao">
                 <img src="{% static 'app/img/aluno.png' %}" alt="Alunos">
                 <p>Alunos</p>

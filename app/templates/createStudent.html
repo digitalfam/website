@@ -41,7 +41,7 @@
            
             <div class="actions-container">
                 <div class="actions">
-                    <button type="button" class="cancel" onclick="window.location.href='{% url 'student' %}'">Cancelar</button>
+                    <button type="button" class="cancel" onclick="window.location.href='{% url 'students' %}';">Cancelar</button>
                     <button type="submit" class="save" form="student-form">Salvar</button>
                 </div>
             </div>
@@ -93,7 +93,7 @@
                 <div class="right-column">
                     <label for="photo" class="upload-label" class="label">
                         <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(event)">
-                        <div class="image-preview" id="image-preview" style="background-image: url('{% static 'app/img/avatar_original.png' %}');"></div>
+                        <div class="image-preview" id="image-preview"></div>
                         <div class="edit-icon"><i class="fa-regular fa-pen-to-square"></i></div>
                     </label>
 

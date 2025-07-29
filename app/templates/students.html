@@ -56,10 +56,10 @@
            
         </div>
         <div class="search-container">
-            <form method="get" action="{% url 'student' %}">
+            <form method="get" action="{% url 'students' %}">
             <input type="text" name="search" placeholder="Pesquisar aluno" value="{{ search }}">
             <button type="submit"><i class="fas fa-search"></i></button>
-            <button type="button" onclick="window.location.href='{% url 'student' %}'">Limpar</button>
+            <button type="button" onclick="window.location.href='{% url 'students' %}';">Limpar</button>
             </form>
         </div>
         <div class="student-table">
@@ -93,10 +93,14 @@
                     </div>
                     <div class="student-actions">
                       
-                        <button class="view" onclick="window.location.href='{% url 'student_detail' students.pk %}'"><i class="fa-regular fa-eye"></i></button>
+                                                <button class="view" onclick="window.location.href='{% url 'detail_student' students.pk %}';">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
                         {% if user.is_superuser %}
-                        <button class="edit" onclick="window.location.href='{% url 'update_student' students.pk %}'"><i class="fa-regular fa-pen-to-square"></i></button>
-                        <button class="document" onclick="window.location.href='{% url 'create_student_document' student_pk=students.pk %}'">
+                        <button class="edit" onclick="window.location.href='{% url 'update_student' students.pk %}';">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </button>
+                        <button class="document" onclick="window.location.href='{% url 'create_student_document' students.pk %}';">
                             <i class="fa-regular fa-file"></i>
                         </button>
                         <form method="post" action="{% url 'delete_student' students.pk %}" style="display:inline;">
